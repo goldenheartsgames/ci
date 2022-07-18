@@ -7,18 +7,24 @@ on:
   workflow_call:
     inputs:
       gameName:
-        required: true
         type: string
+        required: true
       AWS_ACCESS_KEY_ID:
+        type: string
         required: true
       AWS_SECRET_ACCESS_KEY:
+        type: string
         required: true
       AWS_REGION:
+        type: string
         required: true
       AWS_CF_DIST_ID:
+        type: string
         required: true
       GHG_DEV_URL:
+        type: string
         required: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
