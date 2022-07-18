@@ -7,30 +7,25 @@ on:
   workflow_call:
     inputs:
       gameName:
-        type: string
         required: true
-      AWS_ACCESS_KEY_ID:
         type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
         required: true
       AWS_SECRET_ACCESS_KEY:
-        type: string
         required: true
       AWS_REGION:
-        type: string
         required: true
       AWS_CF_DIST_ID:
-        type: string
         required: true
       GHG_DEV_URL:
-        type: string
         required: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ inputs.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v3
 
@@ -46,12 +41,12 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ inputs.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ inputs.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ inputs.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy dashboard to bucket
-        run: aws s3 sync dist s3://${{ inputs.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
+        run: aws s3 sync dist s3://${{ secrets.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
 
       - name: Invalidate dashboard cloudfront
-        run: aws cloudfront create-invalidation --distribution-id ${{ inputs.AWS_CF_DIST_ID }} --paths "/${{ inputs.gameName }}/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CF_DIST_ID }} --paths "/${{ inputs.gameName }}/*"
