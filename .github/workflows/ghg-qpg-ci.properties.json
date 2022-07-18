@@ -1,0 +1,13 @@
+{
+  "name": "GHG QPG CI/CD Workflow",
+  "description": "GHG workflow for build and deployment of our QPG games",
+  "iconName": "ghg-heart",
+  "categories": [
+    "Typescript",
+    "Javascript"
+  ],
+  "filePatterns": [
+    "package.json$",
+    ".*\\.md$"
+  ]
+}
