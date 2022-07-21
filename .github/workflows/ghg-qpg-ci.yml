@@ -34,25 +34,26 @@ jobs:
           sudo apt-get update
           curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
           sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
+          echo agree | TexturePacker --version
 
-      - name: Version
-        run: node -v
-
-      - name: Install dependencies
-        run: npm i
-
-      - name: Build
-        run: npm run build
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Deploy dashboard to bucket
-        run: aws s3 sync dist s3://${{ secrets.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
-
-      - name: Invalidate dashboard cloudfront
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CF_DIST_ID }} --paths "/${{ inputs.gameName }}/*"
+#      - name: Version
+#        run: node -v
+#
+#      - name: Install dependencies
+#        run: npm i
+#
+#      - name: Build
+#        run: npm run build
+#
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ secrets.AWS_REGION }}
+#
+#      - name: Deploy dashboard to bucket
+#        run: aws s3 sync dist s3://${{ secrets.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
+#
+#      - name: Invalidate dashboard cloudfront
+#        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CF_DIST_ID }} --paths "/${{ inputs.gameName }}/*"
