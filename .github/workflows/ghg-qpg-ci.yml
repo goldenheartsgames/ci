@@ -26,9 +26,7 @@ on:
 jobs:
   getTexturePackerDependencies:
     runs-on: ubuntu-latest
-    env:
-      USE_TP_BUNDLING: ${{ inputs.useTPBundling }}
-    if: env.USE_TP_BUNDLING != ''
+    if: ${{ inputs.useTPBundling != '' }}
     steps:
       - name: Install TP and dependencies
         run: |
