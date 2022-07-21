@@ -32,8 +32,8 @@ jobs:
       - name: Install TP and depdencies
         run: |
           sudo apt-get update
-          curl --output tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
-          sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 tp.deb
+          curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
+          sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
 
       - name: Version
         run: node -v
