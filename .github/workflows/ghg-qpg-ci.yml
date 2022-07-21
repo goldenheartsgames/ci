@@ -19,20 +19,22 @@ on:
         required: true
       AWS_REGION:
         required: true
-      AWS_CF_DIST_ID:
-        required: true
-      GHG_DEV_URL:
-        required: true
+#      AWS_CF_DIST_ID:
+#        required: true
+#      GHG_DEV_URL:
+#        required: true
 jobs:
-  - name: Configure AWS Credentials
-    uses: aws-actions/configure-aws-credentials@v1
-    with:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws-region: ${{ secrets.AWS_REGION }}
-  - name: Tell me what my texture key is
-    run: |
-      echo "Hello!!! ${{ secrets.TEXTURE_PACKER_KEY }}"
+  test:
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Tell me what my texture key is
+        run: |
+          echo "Hello!!! ${{ secrets.TEXTURE_PACKER_KEY }}"
 #  - name: Read secrets from AWS Secrets Manager into environment variables
 #    uses: abhilash1in/aws-secrets-manager-action@v2.1.0
 #    with:
