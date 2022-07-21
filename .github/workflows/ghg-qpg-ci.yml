@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Run TP
         run: |
-          echo "Hello World TP"
+          TexturePacker --activate-license ${{ secrets.TEXTURE_PACKER_KEY }} ./raw_assets/texturePacker.tps
 #  buildProject:
 #    runs-on: ubuntu-latest
 #    steps:
