@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       USE_TP_BUNDLING: ${{ inputs.useTPBundling }}
-    if: "${{ env.USE_TP_BUNDLING != '' }}"
+    if: env.USE_TP_BUNDLING != ''
     steps:
       - name: Install TP and dependencies
         run: |
