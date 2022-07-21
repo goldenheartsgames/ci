@@ -33,13 +33,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      - name: Read secrets from AWS Secrets Manager into environment variables
+        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        with:
+          secrets: *
       - name: Tell me what my texture key is
         run: |
           echo "Hello!!! ${{ secrets.TEXTURE_PACKER_KEY }}"
-#  - name: Read secrets from AWS Secrets Manager into environment variables
-#    uses: abhilash1in/aws-secrets-manager-action@v2.1.0
-#    with:
-#      secrets: *
 #  checkout:
 #    runs-on: ubuntu-latest
 #    env:
