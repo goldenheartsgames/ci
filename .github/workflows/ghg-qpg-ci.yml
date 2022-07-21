@@ -25,11 +25,12 @@ on:
         required: true
 jobs:
   checkout:
-    - uses: actions/checkout@v3
-    - uses: actions/upload-artifact@v3
-      with:
-        name: ${{ inputs.gameName }}
-        path: ${{ inputs.gameName }}/
+    - steps:
+      - uses: actions/checkout@v3
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.gameName }}
+          path: ${{ inputs.gameName }}/
 #  buildAtlas:
 #    runs-on: ubuntu-latest
 #    if: ${{ inputs.useTPBundling != '' }}
