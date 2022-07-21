@@ -9,6 +9,9 @@ on:
       gameName:
         required: true
         type: string
+      useTPBundling:
+        required: false
+        type: boolean
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -23,13 +26,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      TEXTURE_PACKER_KEY: ${{ secrets.TEXTURE_PACKER_KEY }}
     steps:
       - uses: actions/checkout@v3
 
       - name: Install TP and depdencies
-        if: "${{ env.TEXTURE_PACKER_KEY != '' }}"
+        env:
+          MY_KEY: ${{ inputs.useTPBundling }}
+        if: "${{ env.useTPBundling != '' }}"
         run: |
           sudo apt-get update
           curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
