@@ -60,17 +60,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: [checkout, buildAtlas]
     steps:
-      - name: Cleanup
-        run: |
-          rm -rf ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
-
       - uses: actions/download-artifact@v3
+        id: download
         with:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}
 
       - name: Install dependencies
         run: npm i
+        working-directory: ${{ steps.download.outputs.download-path }}
 
       - name: Build
         run: npm run build
@@ -84,6 +82,7 @@ jobs:
 
       - name: Deploy game
         run: aws s3 sync dist s3://${{ secrets.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
+        working-directory: ${{ steps.download.outputs.download-path }}
 
       - name: Invalidate dashboard cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CF_DIST_ID }} --paths "/${{ inputs.gameName }}/*"
