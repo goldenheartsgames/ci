@@ -34,12 +34,6 @@ jobs:
           curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
           sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
           echo agree | TexturePacker --version
-  buildAtlases:
-    runs-on: ubuntu-latest
-    needs: [getTexturePackerDependencies]
-    steps:
-      - name: Run TP
-        run: |
           TexturePacker --activate-license ${{ secrets.TEXTURE_PACKER_KEY }} ./raw_assets/texturePacker.tps
 #  buildProject:
 #    runs-on: ubuntu-latest
