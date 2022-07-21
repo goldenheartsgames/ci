@@ -27,18 +27,18 @@ jobs:
   checkout:
     runs-on: ubuntu-latest
     env:
-      PATH: /home/runner/work/
+      WORKING_PATH: /home/runner/work/
     steps:
       - uses: actions/checkout@v3
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
+          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
   buildAtlas:
     runs-on: ubuntu-latest
     if: ${{ inputs.useTPBundling != '' }}
     env:
-      PATH: /home/runner/work/
+      WORKING_PATH: /home/runner/work/
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
+          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
 #  buildProject:
 #    runs-on: ubuntu-latest
 #    steps:
