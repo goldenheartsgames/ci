@@ -66,6 +66,10 @@ jobs:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}
 
+      - name: TEST
+        run: |
+          echo "HELLO ${{ steps.download.outputs.download-path }}"
+
       - name: Install dependencies
         run: npm i
         working-directory: ${{ steps.download.outputs.download-path }}
