@@ -36,7 +36,8 @@ jobs:
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
         with:
-          secrets: *
+          secrets: |
+            *
       - name: Tell me what my texture key is
         run: |
           echo "Hello!!! ${{ secrets.TEXTURE_PACKER_KEY }}"
