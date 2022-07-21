@@ -63,7 +63,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/
+          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
 
       - name: Install dependencies
         run: npm i
@@ -78,7 +78,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Deploy dashboard to bucket
+      - name: Deploy game
         run: aws s3 sync dist s3://${{ secrets.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
 
       - name: Invalidate dashboard cloudfront
