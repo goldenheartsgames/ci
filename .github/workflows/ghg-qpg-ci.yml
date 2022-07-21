@@ -60,10 +60,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [checkout, buildAtlas]
     steps:
+      - name: Cleanup
+        run: |
+          rm -rf ${{ env.WORKING_PATH }}${{ inputs.gameName }}/
+
       - uses: actions/download-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}/
+          path: ${{ env.WORKING_PATH }}
 
       - name: Install dependencies
         run: npm i
