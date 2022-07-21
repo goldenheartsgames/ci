@@ -44,7 +44,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: /home/runner/work
+          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/
       - name: Install TP and dependencies
         run: |
           sudo apt-get update
@@ -55,7 +55,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
+          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/
 #  buildProject:
 #    runs-on: ubuntu-latest
 #    steps:
