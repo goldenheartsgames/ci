@@ -26,25 +26,35 @@ on:
 jobs:
   checkout:
     runs-on: ubuntu-latest
+    env:
+      PATH: /home/runner/work/
     steps:
       - uses: actions/checkout@v3
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: /home/runner/work/${{ inputs.gameName }}/${{ inputs.gameName }}/
-#  buildAtlas:
-#    runs-on: ubuntu-latest
-#    if: ${{ inputs.useTPBundling != '' }}
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Install TP and dependencies
-#        run: |
-#          sudo apt-get update
-#          curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
-#          sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
-#          echo agree | TexturePacker --version
-#          TexturePacker --activate-license ${{ secrets.TEXTURE_PACKER_KEY }} ./raw_assets/texturePacker.tps
+          path: ${{ env.PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
+  buildAtlas:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.useTPBundling != '' }}
+    env:
+      PATH: /home/runner/work/
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.gameName }}
+          path: /home/runner/work
+      - name: Install TP and dependencies
+        run: |
+          sudo apt-get update
+          curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
+          sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
+          echo agree | TexturePacker --version
+          TexturePacker --activate-license ${{ secrets.TEXTURE_PACKER_KEY }} ./raw_assets/texturePacker.tps
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.gameName }}
+          path: ${{ env.PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
 #  buildProject:
 #    runs-on: ubuntu-latest
 #    steps:
