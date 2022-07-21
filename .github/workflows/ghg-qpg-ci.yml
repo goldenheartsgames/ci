@@ -66,13 +66,9 @@ jobs:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}
 
-      - name: TEST
-        run: |
-          echo "HELLO ${{ steps.download.outputs.download-path }}"
-
       - name: Install dependencies
-        run: npm i
         working-directory: ${{ steps.download.outputs.download-path }}
+        run: npm i
 
       - name: Build
         run: npm run build
@@ -85,8 +81,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy game
-        run: aws s3 sync dist s3://${{ secrets.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
         working-directory: ${{ steps.download.outputs.download-path }}
+        run: aws s3 sync dist s3://${{ secrets.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
 
       - name: Invalidate dashboard cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CF_DIST_ID }} --paths "/${{ inputs.gameName }}/*"
