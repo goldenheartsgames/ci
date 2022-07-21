@@ -24,19 +24,25 @@ on:
       GHG_DEV_URL:
         required: true
 jobs:
-  getTexturePackerDependencies:
-    runs-on: ubuntu-latest
-    if: ${{ inputs.useTPBundling != '' }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install TP and dependencies
-        run: |
-          sudo apt-get update
-          curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
-          sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
-          echo agree | TexturePacker --version
-          TexturePacker --activate-license ${{ secrets.TEXTURE_PACKER_KEY }} ./raw_assets/texturePacker.tps
+  checkout:
+    - uses: actions/checkout@v3
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.gameName }}
+        path: ${{ inputs.gameName }}/
+#  buildAtlas:
+#    runs-on: ubuntu-latest
+#    if: ${{ inputs.useTPBundling != '' }}
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Install TP and dependencies
+#        run: |
+#          sudo apt-get update
+#          curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
+#          sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
+#          echo agree | TexturePacker --version
+#          TexturePacker --activate-license ${{ secrets.TEXTURE_PACKER_KEY }} ./raw_assets/texturePacker.tps
 #  buildProject:
 #    runs-on: ubuntu-latest
 #    steps:
