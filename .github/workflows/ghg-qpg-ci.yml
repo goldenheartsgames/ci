@@ -81,7 +81,6 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy game
-        working-directory: ${{ steps.download.outputs.download-path }}
         run: aws s3 sync dist s3://${{ secrets.GHG_DEV_URL }}/${{ inputs.gameName }} --delete
 
       - name: Invalidate dashboard cloudfront
