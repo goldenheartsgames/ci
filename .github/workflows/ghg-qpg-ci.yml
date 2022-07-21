@@ -27,42 +27,42 @@ jobs:
   checkout:
     runs-on: ubuntu-latest
     env:
-      WORKING_PATH: /home/runner/work/
+      WORKING_PATH: /home/runner/work
     steps:
       - uses: actions/checkout@v3
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/${{ inputs.gameName }}/
+          path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/${{ inputs.gameName }}/
   buildAtlas:
     runs-on: ubuntu-latest
     needs: [checkout]
     if: ${{ inputs.useTPBundling != '' }}
     env:
-      WORKING_PATH: /home/runner/work/
+      WORKING_PATH: /home/runner/work
     steps:
       - uses: actions/download-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/
+          path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
       - name: Install TP and dependencies
         run: |
           sudo apt-get update
           curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
           sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
           echo agree | TexturePacker --version
-          TexturePacker --activate-license ${{ secrets.TEXTURE_PACKER_KEY }} ${{ env.WORKING_PATH }}${{ inputs.gameName }}/raw_assets/texturePacker.tps
+          TexturePacker --activate-license ${{ secrets.TEXTURE_PACKER_KEY }} ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/raw_assets/texturePacker.tps
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}${{ inputs.gameName }}/
+          path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
   buildProject:
     runs-on: ubuntu-latest
     needs: [checkout, buildAtlas]
     steps:
       - name: Cleanup
         run: |
-          rm -rf ${{ env.WORKING_PATH }}${{ inputs.gameName }}/
+          rm -rf ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
 
       - uses: actions/download-artifact@v3
         with:
