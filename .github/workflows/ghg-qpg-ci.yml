@@ -37,7 +37,8 @@ jobs:
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
         with:
           secrets: |
-            *
+            DEV_QPG_CONFIG
+          parse-json: true
       - name: Tell me what my texture key is
         run: |
           echo "Hello!!! ${{ secrets.TEXTURE_PACKER_KEY }}"
