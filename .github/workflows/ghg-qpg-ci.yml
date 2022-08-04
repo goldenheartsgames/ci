@@ -20,21 +20,6 @@ on:
       AWS_REGION:
         required: true
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: Read secrets from AWS Secrets Manager into environment variables
-        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
-        with:
-          secrets: |
-            DEV_QPG_CONFIG
-          parse-json: true
   checkout:
     runs-on: ubuntu-latest
     env:
@@ -56,6 +41,18 @@ jobs:
         with:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Read secrets from AWS Secrets Manager into environment variables
+        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        with:
+          secrets: |
+            DEV_QPG_CONFIG
+          parse-json: true
       - name: Install TP and dependencies
         run: |
           sudo apt-get update
@@ -90,6 +87,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Read secrets from AWS Secrets Manager into environment variables
+        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        with:
+          secrets: |
+            DEV_QPG_CONFIG
+          parse-json: true
 
       - name: Deploy game
         run: aws s3 sync dist s3://${DEV_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --delete
