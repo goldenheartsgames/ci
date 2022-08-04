@@ -37,7 +37,7 @@ jobs:
           parse-json: true
       - name: Tell me what my texture key is
         run: |
-          echo "Hello!!! ${{ TEXTURE_PACKER_KEY }}"
+          echo "Hello!!! ${{ DEv_TEXTURE_PACKER_KEY }}"
 #  checkout:
 #    runs-on: ubuntu-latest
 #    env:
