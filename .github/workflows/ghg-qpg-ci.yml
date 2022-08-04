@@ -37,7 +37,10 @@ jobs:
           parse-json: true
       - name: Tell me what my texture key is
         run: |
-          echo "Hello!!! ${TEXTURE_PACKER_KEY}"
+          echo "Hello!!! ${DEV_QPG_CONFIG_TEXTURE_PACKER_KEY}"
+#    DEV_QPG_CONFIG_AWS_CF_DIST_ID: ***
+#    DEV_QPG_CONFIG_GHG_QPG_URL: ***
+#    DEV_QPG_CONFIG_TEXTURE_PACKER_KEY: ***
 #  checkout:
 #    runs-on: ubuntu-latest
 #    env:
