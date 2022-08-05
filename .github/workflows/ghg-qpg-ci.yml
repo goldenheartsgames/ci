@@ -33,27 +33,30 @@ jobs:
   buildAtlas:
     runs-on: ubuntu-latest
     needs: [checkout]
-    if: ${{ inputs.useTPBundling != '' }}
     env:
       WORKING_PATH: /home/runner/work
     steps:
       - uses: actions/download-artifact@v3
+        if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
+        if: ${{ inputs.useTPBundling != '' }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        if: ${{ inputs.useTPBundling != '' }}
         with:
           secrets: |
             DEV_QPG_CONFIG
           parse-json: true
       - name: Install TP and dependencies
+        if: ${{ inputs.useTPBundling != '' }}
         run: |
           sudo apt-get update
           curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
@@ -61,6 +64,7 @@ jobs:
           echo agree | TexturePacker --version
           TexturePacker --activate-license ${DEV_QPG_CONFIG_TEXTURE_PACKER_KEY} ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/raw_assets/texturePacker.tps
       - uses: actions/upload-artifact@v3
+        if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
