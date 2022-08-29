@@ -19,6 +19,8 @@ on:
         required: true
       AWS_REGION:
         required: true
+      SLACK_WEBHOOK:
+        required: true
 jobs:
   checkout:
     runs-on: ubuntu-latest
