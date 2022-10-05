@@ -27,6 +27,9 @@ jobs:
     env:
       WORKING_PATH: /home/runner/work
     steps:
+      - name: Make directory
+        run: |
+          mkdir -p ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/${{ inputs.gameName }}/
       - uses: actions/checkout@v3
         with:
           path: /${{ inputs.gameName }}/${{ inputs.gameName }}/
