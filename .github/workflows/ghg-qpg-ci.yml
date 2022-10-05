@@ -33,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/
   buildAtlas:
     runs-on: ubuntu-latest
     needs: [checkout]
@@ -44,7 +44,7 @@ jobs:
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         if: ${{ inputs.useTPBundling != '' }}
