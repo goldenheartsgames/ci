@@ -64,7 +64,7 @@ jobs:
           curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
           sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
           echo agree | TexturePacker --version
-          TexturePacker --activate-license ${DEV_QPG_CONFIG_TEXTURE_PACKER_KEY} ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/raw_assets/texturePacker.tps
+          TexturePacker --activate-license ${DEV_QPG_CONFIG_TEXTURE_PACKER_KEY} ${{ github.workspace }}/${{ inputs.gameName }}/raw_assets/texturePacker.tps
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.useTPBundling != '' }}
         with:
