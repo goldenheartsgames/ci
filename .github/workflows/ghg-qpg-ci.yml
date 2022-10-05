@@ -27,16 +27,11 @@ jobs:
     env:
       WORKING_PATH: /home/runner/work
     steps:
-      - name: Make directory
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/${{ inputs.gameName }}/${{ inputs.gameName }}/
       - uses: actions/checkout@v3
-        with:
-          path: /${{ inputs.gameName }}/${{ inputs.gameName }}/
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/${{ inputs.gameName }}/
+          path: $GITHUB_WORKSPACE
   buildAtlas:
     runs-on: ubuntu-latest
     needs: [checkout]
