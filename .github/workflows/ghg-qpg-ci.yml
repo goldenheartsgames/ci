@@ -31,7 +31,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/${{ inputs.gameName }}/
+          path: ${{ env.WORKING_PATH }}/${{ github.event.repository.name }}/${{ inputs.gameName }}/
   buildAtlas:
     runs-on: ubuntu-latest
     needs: [checkout]
