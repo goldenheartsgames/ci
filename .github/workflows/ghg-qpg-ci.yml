@@ -69,7 +69,7 @@ jobs:
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
+          path: ${{ github.workspace }}/${{ inputs.gameName }}/
   buildProject:
     runs-on: ubuntu-latest
     needs: [checkout, buildAtlas]
