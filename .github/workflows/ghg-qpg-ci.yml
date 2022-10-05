@@ -30,6 +30,8 @@ jobs:
       - name: Make directory
         run: |
           mkdir -p ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/${{ inputs.gameName }}/
+          echo "WORKSPACE BELOW:"
+          echo $GITHUB_WORKSPACE
       - uses: actions/checkout@v3
         with:
           path: /${{ inputs.gameName }}/${{ inputs.gameName }}/
