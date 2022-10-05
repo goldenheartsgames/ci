@@ -42,7 +42,7 @@ jobs:
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}/${{ inputs.gameName }}/
+          path: $GITHUB_WORKSPACE/${{ inputs.gameName }}/
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         if: ${{ inputs.useTPBundling != '' }}
@@ -78,7 +78,7 @@ jobs:
         id: download
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}
+          path: $GITHUB_WORKSPACE
 
       - name: Install dependencies
         working-directory: ${{ steps.download.outputs.download-path }}
