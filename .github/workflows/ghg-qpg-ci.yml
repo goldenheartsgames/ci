@@ -21,6 +21,9 @@ on:
         required: true
       SLACK_WEBHOOK:
         required: true
+      NODE_AUTH_TOKEN:
+        required: true
+      
 jobs:
   checkout:
     runs-on: ubuntu-latest
