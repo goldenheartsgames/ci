@@ -82,9 +82,16 @@ jobs:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}
 
+      - uses: actions/setup-node@v3
+        with:
+          always-auth: true
+          node-version: '16'
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
       - name: Install dependencies
         working-directory: ${{ steps.download.outputs.download-path }}
-        run: npm i
+        run: npm ci
 
       - name: Build
         run: npm run build
