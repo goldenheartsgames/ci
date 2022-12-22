@@ -41,13 +41,21 @@ jobs:
       - name: Set QPG Key
         run: |
           case "${GITHUB_REF##*/}" in
-            "dev") qpgKey="DEV_QPG_CONFIG"
+            "dev")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
             ;;
-            "qa1") qpgKey="DEV_QPG_CONFIG"
+            "qa1")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
             ;;
-            "qa2") qpgKey="DEV_QPG_CONFIG"
+            "qa2")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
             ;;
-            "staging") qpgKey="DEV_QPG_CONFIG"
+            "staging")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
             ;;
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV          
@@ -61,12 +69,8 @@ jobs:
 
       - name: Running
         run: |
-          readarray -t vars < <(compgen -A variable | grep DEV_)
-          declare -p vars
-          for item in "${vars[@]}"
-          do
-              printf "%s=%s\n" "${item}" "${!item}"
-          done
+          grepped=( "${!" . $qpgPrefix . "_@}" )
+          echo "Test: " . $grepped
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
