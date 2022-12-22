@@ -80,8 +80,8 @@ jobs:
                 echo "${var}=$(echo "TEST")" >> $GITHUB_ENV
               fi
           done
-          n=QPG_CONFIG_TEXTURE_PACKER_KEY
-          echo "${!n}"
+
+          readarray -t vars < <(compgen -A variable) | grep QPG_
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
