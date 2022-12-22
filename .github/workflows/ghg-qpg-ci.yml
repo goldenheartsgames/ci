@@ -75,7 +75,7 @@ jobs:
           do
               if  [[ $item == $qpgPrefix* ]];
               then
-               var="${item/$(qpgPrefix)/}"
+               var=${item/$(qpgPrefix)/}
                echo $var
                echo "${!var}"
               fi
