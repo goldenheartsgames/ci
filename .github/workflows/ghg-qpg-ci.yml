@@ -69,11 +69,11 @@ jobs:
 
       - name: Running
         run: |
-          readarray -t vars < <(compgen -A variable | grep "($qpgPrefix)")
+          readarray -t vars < <(compgen -A variable)
           declare -p vars
           for item in "${vars[@]}"
           do
-              printf "%s=%s\n" "${item}" "${!item}"
+              echo "item ".$item
           done
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
