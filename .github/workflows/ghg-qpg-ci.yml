@@ -33,13 +33,13 @@ jobs:
       - name: Test
         run: |
           case "${GITHUB_REF##*/}" in
-            "dev") $qpgKey = "DEV_QPG_CONFIG"
+            "dev") qpgKey="DEV_QPG_CONFIG"
             ;;
-            "qa1") $qpgKey = "QA1_QPG_CONFIG"
+            "qa1") qpgKey="QA1_QPG_CONFIG"
             ;;
-            "qa2") $qpgKey = "QA2_QPG_CONFIG"
+            "qa2") qpgKey="QA2_QPG_CONFIG"
             ;;
-            "staging") $qpgKey = "STAGING_QPG_CONFIG"
+            "staging") qpgKey="STAGING_QPG_CONFIG"
             ;;
           esac
           echo "KEY: " . $qpgKey
