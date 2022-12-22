@@ -76,9 +76,7 @@ jobs:
           do
               if  [[ $item == $QPG_PREFIX* ]];
               then
-               var=${item/$(QPG_PREFIX)/}
-               echo $var
-               echo "${!var}"
+                echo $item
               fi
           done
 #      - uses: actions/checkout@v3
