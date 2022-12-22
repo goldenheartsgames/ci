@@ -69,8 +69,12 @@ jobs:
 
       - name: Running
         run: |
-          grepped=( "${!$qpgPrefix@}" )
-          echo "Test: " . $grepped
+          readarray -t vars < <(compgen -A variable | grep $qpgPrefix)
+          declare -p vars
+          for item in "${vars[@]}"
+          do
+              printf "%s=%s\n" "${item}" "${!item}"
+          done
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
