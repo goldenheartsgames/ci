@@ -81,7 +81,8 @@ jobs:
               fi
           done
 
-          readarray -t vars < <(compgen -A variable) | grep QPG_
+          readarray -t testvars < <(compgen -A variable) | grep QPG_
+          declare -p testvars
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
