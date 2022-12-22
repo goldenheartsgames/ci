@@ -77,7 +77,7 @@ jobs:
               if  [[ $item == $QPG_PREFIX* ]];
               then
                 var=${item/$QPG_PREFIX/}
-                echo "${var}=$(echo "TEST")" >> $GITHUB_ENV
+                echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
               fi
           done
 
