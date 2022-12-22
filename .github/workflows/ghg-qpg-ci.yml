@@ -74,6 +74,7 @@ jobs:
           for item in "${vars[@]}"
           do
               if  [[ $item == DEV_* ]];
+              then
                 echo "item " . $item
               fi
           done
