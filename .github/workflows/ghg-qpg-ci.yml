@@ -69,7 +69,7 @@ jobs:
 
       - name: Running
         run: |
-          grepped=( "${!" . $qpgPrefix . "_@}" )
+          grepped=( "${!$qpgPrefix@}" )
           echo "Test: " . $grepped
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
