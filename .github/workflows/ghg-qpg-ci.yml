@@ -70,9 +70,7 @@ jobs:
 
       - name: Running
         run: |
-          echo ${env.QPG_PREFIX}
-          echo "OK1"
-          echo ${{env.QPG_PREFIX}}
+          echo ${QPG_PREFIX}
           echo "OK2"
 #          readarray -t vars < <(compgen -A variable)
 #          declare -p vars
