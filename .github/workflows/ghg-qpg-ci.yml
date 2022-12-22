@@ -32,7 +32,17 @@ jobs:
     steps:
       - name: Test
         run: |
-          echo ${GITHUB_REF##*/}
+          case "${GITHUB_REF##*/}" in
+            "dev") $qpgKey = "DEV_QPG_CONFIG"
+            ;;
+            "qa1") $qpgKey = "QA1_QPG_CONFIG"
+            ;;
+            "qa2") $qpgKey = "QA2_QPG_CONFIG"
+            ;;
+            "staging") $qpgKey = "STAGING_QPG_CONFIG"
+            ;;
+          esac
+          echo "KEY: " . $qpgKey
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
