@@ -70,19 +70,17 @@ jobs:
 
       - name: Running
         run: |
-          echo ${QPG_PREFIX}
-          echo "OK2"
-#          readarray -t vars < <(compgen -A variable)
-#          declare -p vars
-#          for item in "${vars[@]}"
-#          do
-#              if  [[ $item == $qpgPrefix* ]];
-#              then
-#               var=${item/$(qpgPrefix)/}
-#               echo $var
-#               echo "${!var}"
-#              fi
-#          done
+          readarray -t vars < <(compgen -A variable)
+          declare -p vars
+          for item in "${vars[@]}"
+          do
+              if  [[ $item == $QPG_PREFIX* ]];
+              then
+               var=${item/$(qpgPrefix)/}
+               echo $var
+               echo "${!var}"
+              fi
+          done
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
