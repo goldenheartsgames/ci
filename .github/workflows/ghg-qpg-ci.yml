@@ -58,7 +58,8 @@ jobs:
               qpgPrefix="DEV_"
             ;;
           esac
-          echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV          
+          echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
+          echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
@@ -69,8 +70,10 @@ jobs:
 
       - name: Running
         run: |
-          echo $qpgPrefix
-          echo "OK"
+          echo ${env.QPG_PREFIX}
+          echo "OK1"
+          echo ${{env.QPG_PREFIX}}
+          echo "OK2"
 #          readarray -t vars < <(compgen -A variable)
 #          declare -p vars
 #          for item in "${vars[@]}"
