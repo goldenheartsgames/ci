@@ -69,7 +69,7 @@ jobs:
 
       - name: Running
         run: |
-          readarray -t vars < <(compgen -A variable | grep "$(qpgPrefix)")
+          readarray -t vars < <(compgen -A variable | grep "($qpgPrefix)")
           declare -p vars
           for item in "${vars[@]}"
           do
