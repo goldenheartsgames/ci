@@ -61,7 +61,12 @@ jobs:
 
       - name: Running
         run: |
-          compgen -A variable | grep DEV_
+          readarray -t vars < <(compgen -A variable | grep DEV_)
+          declare -p vars
+          for item in "${vars[@]}"
+          do
+              printf "%s=%s\n" "${item}" "${!item}"
+          done
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
