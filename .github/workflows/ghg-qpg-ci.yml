@@ -75,7 +75,7 @@ jobs:
           do
               if  [[ $item == DEV_* ]];
               then
-                echo "item " . $item
+                echo "???" . ${item/qpgPrefix/}
               fi
           done
 #      - uses: actions/checkout@v3
