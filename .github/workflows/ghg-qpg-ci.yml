@@ -69,15 +69,17 @@ jobs:
 
       - name: Running
         run: |
-          readarray -t vars < <(compgen -A variable)
-          declare -p vars
-          for item in "${vars[@]}"
-          do
-              if  [[ $item == DEV_* ]];
-              then
-                echo "???" . ${item/DEV_/}
-              fi
-          done
+          echo ${"DEV_QPG_CONFIG_TEXTURE_PACKER_KEY"}
+#          readarray -t vars < <(compgen -A variable)
+#          declare -p vars
+#          for item in "${vars[@]}"
+#          do
+#              if  [[ $item == $qpgPrefix* ]];
+#              then
+#                echo "${item/$(qpgPrefix)/}=$(echo )" >> $GITHUB_ENV
+#                echo
+#              fi
+#          done
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
