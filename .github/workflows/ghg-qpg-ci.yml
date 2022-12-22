@@ -30,19 +30,33 @@ jobs:
     env:
       WORKING_PATH: /home/runner/work
     steps:
-      - name: Test
+      - name: Set QPG Key
         run: |
           case "${GITHUB_REF##*/}" in
             "dev") qpgKey="DEV_QPG_CONFIG"
             ;;
-            "qa1") qpgKey="QA1_QPG_CONFIG"
+            "qa1") qpgKey="DEV_QPG_CONFIG"
             ;;
-            "qa2") qpgKey="QA2_QPG_CONFIG"
+            "qa2") qpgKey="DEV_QPG_CONFIG"
             ;;
-            "staging") qpgKey="STAGING_QPG_CONFIG"
+            "staging") qpgKey="DEV_QPG_CONFIG"
             ;;
           esac
-          echo "KEY: " . $qpgKey
+          echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
+      - name: Test Key
+        run: echo ${{ env.QPG_KEY }}
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ secrets.AWS_REGION }}
+
+#      - name: Read secrets from AWS Secrets Manager into environment variables
+#        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+#        with:
+#          secrets: ${{ env.QPG_KEY }}
+#          parse-json: true
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
