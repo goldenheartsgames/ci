@@ -69,7 +69,7 @@ jobs:
 
       - name: Running
         run: |
-          echo ${"DEV_QPG_CONFIG_TEXTURE_PACKER_KEY"}
+          echo ${!"DEV_QPG_CONFIG_TEXTURE_PACKER_KEY"}
 #          readarray -t vars < <(compgen -A variable)
 #          declare -p vars
 #          for item in "${vars[@]}"
