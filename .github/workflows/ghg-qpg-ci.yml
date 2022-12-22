@@ -80,6 +80,11 @@ jobs:
                 echo "${var}=$(echo "TEST")" >> $GITHUB_ENV
               fi
           done
+
+      - name: Running 2
+        run: |
+          echo "OK"
+          echo ${QPG_CONFIG_TEXTURE_PACKER_KEY}
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
