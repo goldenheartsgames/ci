@@ -168,6 +168,7 @@ jobs:
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        if: ${{ inputs.useTPBundling != '' }}
         with:
           secrets: ${{ env.QPG_KEY }}
           parse-json: true
@@ -183,7 +184,7 @@ jobs:
                 var=${item/$QPG_PREFIX/}
                 echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
               fi
-          done         
+          done    
 
       - name: Deploy game
         run: aws s3 sync dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete
