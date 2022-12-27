@@ -89,13 +89,13 @@ jobs:
         run: |
           readarray -t vars < <(compgen -A variable)
           declare -p vars
-          echo "PREFIX: " . $QPG_PREFIX
           for item in "${vars[@]}"
           do
               if  [[ $item == $QPG_PREFIX* ]];
               then
                 var=${item/$QPG_PREFIX/}
                 echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
+                echo "item ${item}"
               fi
           done          
 
@@ -177,7 +177,6 @@ jobs:
         run: |
           readarray -t vars < <(compgen -A variable)
           declare -p vars
-          echo "PREFIX: " . $QPG_PREFIX
           for item in "${vars[@]}"
           do
               if  [[ $item == $QPG_PREFIX* ]];
