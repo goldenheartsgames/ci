@@ -97,7 +97,8 @@ jobs:
                 echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
                 echo "item ${!var}"
               fi
-          done          
+          done
+          echo "TEST" . "${QA2_!QPG_CONFIG_TEXTURE_PACKER_KEY}"
 
       - name: Install TP and dependencies
         if: ${{ inputs.useTPBundling != '' }}
