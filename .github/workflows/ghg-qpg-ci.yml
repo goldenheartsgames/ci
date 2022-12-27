@@ -37,7 +37,7 @@ jobs:
 #          path: ${{ github.workspace }}/
   buildAtlas:
     runs-on: ubuntu-latest
-    needs: [checkout]
+#    needs: [checkout]
     env:
       WORKING_PATH: /home/runner/work
     steps:
