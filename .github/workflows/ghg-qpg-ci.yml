@@ -98,7 +98,7 @@ jobs:
                 echo "item ${!var}"
               fi
           done
-          key="${QPG_PREFIX}_QPG_CONFIG_TEXTURE_PACKER_KEY"
+          key="QA2_QPG_CONFIG_TEXTURE_PACKER_KEY"
           echo "TEST" . "${!key}"
 
 #      - name: Install TP and dependencies
