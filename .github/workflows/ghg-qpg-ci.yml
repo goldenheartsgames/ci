@@ -25,11 +25,11 @@ on:
         required: true
 
 jobs:
-  checkout:
-    runs-on: ubuntu-latest
-    env:
-      WORKING_PATH: /home/runner/work
-    steps:
+#  checkout:
+#    runs-on: ubuntu-latest
+#    env:
+#      WORKING_PATH: /home/runner/work
+#    steps:
 #      - uses: actions/checkout@v3
 #      - uses: actions/upload-artifact@v3
 #        with:
