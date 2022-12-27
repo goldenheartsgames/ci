@@ -58,16 +58,25 @@ jobs:
       - name: Set QPG Key
         run: |
           case "${GITHUB_REF##*/}" in
-            "dev") qpgKey="DEV_QPG_CONFIG"
+            "dev")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
             ;;
-            "qa1") qpgKey="QA1_QPG_CONFIG"
+            "qa1")
+              qpgKey="QA1_QPG_CONFIG"
+              qpgPrefix="QA1_"
             ;;
-            "qa2") qpgKey="QA2_QPG_CONFIG"
+            "qa2")
+              qpgKey="QA2_QPG_CONFIG"
+              qpgPrefix="QA2_"
             ;;
-            "staging") qpgKey="STAGING_QPG_CONFIG"
+            "staging")
+              qpgKey="STAGING_QPG_CONFIG"
+              qpgPrefix="STAGING_"
             ;;
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
+          echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
