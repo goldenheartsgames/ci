@@ -87,7 +87,10 @@ jobs:
 
       - name: Convert variables
         run: |
-          echo "HELLO " . ${{ env.QPG_PREFIX }}
+          echo "test"
+          echo ${QPG_PREFIX}
+          echo ${env.QPG_PREFIX}
+          echo "test2"
           readarray -t vars < <(compgen -A variable)
           declare -p vars
           for item in "${vars[@]}"
