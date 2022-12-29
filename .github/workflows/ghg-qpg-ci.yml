@@ -95,6 +95,7 @@ jobs:
               then
                 var=${item/$QPG_PREFIX/}
                 echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
+                echo "key: " . $item
               fi
           done          
 
