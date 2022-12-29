@@ -140,6 +140,7 @@ jobs:
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
+        if: ${{ inputs.useTPBundling != '' }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -148,7 +149,7 @@ jobs:
       - name: Set QPG Key
         run: |
           case "${GITHUB_REF##*/}" in
-            "dev")
+            "develop")
               qpgKey="DEV_QPG_CONFIG"
               qpgPrefix="DEV_"
             ;;
@@ -179,14 +180,16 @@ jobs:
         run: |
           readarray -t vars < <(compgen -A variable)
           declare -p vars
+          echo $vars
           for item in "${vars[@]}"
           do
               if  [[ $item == $QPG_PREFIX* ]];
               then
                 var=${item/$QPG_PREFIX/}
                 echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
+                  echo "key: " . $item
               fi
-          done    
+          done
 
       - name: Deploy game
         run: aws s3 sync dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete
