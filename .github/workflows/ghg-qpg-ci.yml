@@ -87,6 +87,7 @@ jobs:
 
       - name: Convert variables
         run: |
+          echo "HELLO " . ${{ env.QPG_PREFIX }}
           readarray -t vars < <(compgen -A variable)
           declare -p vars
           for item in "${vars[@]}"
@@ -95,7 +96,7 @@ jobs:
               then
                 var=${item/$QPG_PREFIX/}
                 echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
-                echo "key: " . $item
+                  echo "key: " . $item
               fi
           done          
 
