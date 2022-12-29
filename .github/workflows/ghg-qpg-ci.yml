@@ -89,10 +89,11 @@ jobs:
         run: |
           echo "test"
           echo ${QPG_PREFIX}
-          echo ${env.QPG_PREFIX}
+          echo $QPG_PREFIX
           echo "test2"
           readarray -t vars < <(compgen -A variable)
           declare -p vars
+          echo $vars
           for item in "${vars[@]}"
           do
               if  [[ $item == $QPG_PREFIX* ]];
