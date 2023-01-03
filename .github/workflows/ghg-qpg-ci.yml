@@ -191,6 +191,9 @@ jobs:
               fi
           done
 
+      - name: Check
+        run: echo "yo. " . ${QPG_CONFIG_QPG_GHG_QPG_URL}
+
       - name: Deploy game
         run: aws s3 sync dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete
 
