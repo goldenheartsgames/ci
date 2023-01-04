@@ -41,13 +41,11 @@ jobs:
               echo "Modified build datetime"
               perl -pi -e "s/$ISO8601_OFFSET_REGEX/$ISO8601_DATETIME_UTC_OFFSET/g" $APP_CONFIG_PATH
           fi
-          
-          cat $APP_CONFIG_PATH
       - uses: actions/setup-node@v3
         with:
           node-version: 16
       - run: npm ci
-      - run: ng build --configuration production --aot=true --buildOptimizer=true --output-hashing=all --crossOrigin=use-credentials --output-path=./dist
+      - run: node --max_old_space_size=2048 ${GITHUB_WORKSPACE}/node_modules/@angular/cli/bin/ng build --configuration production --aot=true --buildOptimizer=true --output-hashing=all --crossOrigin=use-credentials --output-path=./dist
 #      - uses: actions/upload-artifact@v3
 #        with:
 #          name: webapp
