@@ -46,7 +46,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-#      - run: npm ci
+      - run: npm ci
+      - run: ng build --configuration production --aot=true --buildOptimizer=true --output-hashing=all --crossOrigin=use-credentials --output-path=./dist
 #      - uses: actions/upload-artifact@v3
 #        with:
 #          name: webapp
