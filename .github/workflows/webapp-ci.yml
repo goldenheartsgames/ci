@@ -1,4 +1,4 @@
-name: QPG CI/CD
+name: WebApp CI/CD
 
 on:
   push:
