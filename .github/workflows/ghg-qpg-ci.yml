@@ -49,7 +49,6 @@ jobs:
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
-        if: ${{ inputs.useTPBundling != '' }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -80,7 +79,6 @@ jobs:
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
-        if: ${{ inputs.useTPBundling != '' }}
         with:
           secrets: ${{ env.QPG_KEY }}
           parse-json: true
@@ -140,7 +138,6 @@ jobs:
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
-        if: ${{ inputs.useTPBundling != '' }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -171,7 +168,6 @@ jobs:
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
-        if: ${{ inputs.useTPBundling != '' }}
         with:
           secrets: ${{ env.QPG_KEY }}
           parse-json: true
