@@ -133,7 +133,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ${{ steps.download.outputs.download-path }}
-        run: npm ci && npm i s3-deploy
+        run: npm ci
 
       - name: Build
         run: npm run build
@@ -191,6 +191,10 @@ jobs:
               fi
           done
 
+      - name: Install s3-deploy package
+        working-directory: ${{ steps.download.outputs.download-path }}
+        run: npm install s3-deploy
+        
       - name: Deploy Game
         run: s3-deploy './dist/**' --cwd './dist/' --deleteRemoved ${{ inputs.gameName }}/** --distId ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --invalidate '/${{ inputs.gameName }}*' --region us-east-2 --bucket ${QPG_CONFIG_QPG_GHG_QPG_URL}
         
