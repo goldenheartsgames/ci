@@ -196,7 +196,7 @@ jobs:
         run: npm install s3-deploy
         
       - name: Deploy Game
-        run: s3-deploy './dist/**' --cwd './dist/' --deleteRemoved ${{ inputs.gameName }}/** --distId ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --invalidate '/${{ inputs.gameName }}*' --region us-east-2 --bucket ${QPG_CONFIG_QPG_GHG_QPG_URL}
+        run: npx s3-deploy './dist/**' --cwd './dist/' --deleteRemoved ${{ inputs.gameName }}/** --distId ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --invalidate '/${{ inputs.gameName }}*' --region us-east-2 --bucket ${QPG_CONFIG_QPG_GHG_QPG_URL}
         
       - name: Invalidate dashboard cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
