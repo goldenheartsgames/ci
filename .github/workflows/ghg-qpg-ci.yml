@@ -33,10 +33,10 @@ jobs:
       - name: Set Artifact Name
         run: echo "artifact_name=${{ github.sha }}" >> $GITHUB_ENV
       - name: DEBUG1
-        run: echo "$(ls)"
+        run: echo "${{ ls }}"
       - uses: actions/checkout@v3
       - name: DEBUG2
-        run: echo "$(ls)"
+        run: echo "${{ ls }}"
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name }}
