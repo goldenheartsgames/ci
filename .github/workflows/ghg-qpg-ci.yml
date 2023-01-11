@@ -30,13 +30,9 @@ jobs:
     steps:
       - name: Set Artifact Name
         run: echo "artifact_name=${{ github.sha }}" >> $GITHUB_ENV
-      - name: 'Cleanup build folder'
-        run: |
-          ls -la ./
-          rm -rf ./* || true
-          rm -rf ./.??* || true
-          ls -la ./
       - uses: actions/checkout@v3
+        with:
+          path: "testpath"
       - run: git config --global user.name 'GitHub'
       - run: git config --global user.email 'github@goldenheartsgames.com'
       - run: rm -rf ./rockdog
@@ -46,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name }}
-          path: ./
+          path: "testpath"
           retention-days: 1
   buildAtlas:
     runs-on: ubuntu-latest
@@ -59,7 +55,7 @@ jobs:
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ env.artifact_name }}
-          path: ./
+          path: "testpath"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -127,7 +123,7 @@ jobs:
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ env.artifact_name }}
-          path: ./
+          path: "testpath"
           retention-days: 1
   buildProject:
     runs-on: ubuntu-latest
@@ -140,7 +136,7 @@ jobs:
         id: download
         with:
           name: ${{ env.artifact_name }}
-          path: .
+          path: "testpath"
 
       - uses: actions/setup-node@v3
         with:
@@ -213,7 +209,7 @@ jobs:
         run: npm install s3-deploy
         
       - name: Deploy Game
-        run: npx s3-deploy './dist/**' --cwd './dist/' --deleteRemoved ${{ inputs.gameName }}/** --distId ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --invalidate '/${{ inputs.gameName }}*' --region us-east-2 --bucket ${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }}
+        run: npx s3-deploy './testpath/dist/**' --cwd './testpath/dist/' --deleteRemoved ${{ inputs.gameName }}/** --distId ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --invalidate '/${{ inputs.gameName }}*' --region us-east-2 --bucket ${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }}
         
       - name: Invalidate dashboard cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
