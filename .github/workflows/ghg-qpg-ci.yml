@@ -30,7 +30,6 @@ jobs:
     env:
       WORKING_PATH: /home/runner/work
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.gameName }}
