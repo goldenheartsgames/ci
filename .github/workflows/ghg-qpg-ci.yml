@@ -30,7 +30,12 @@ jobs:
     steps:
       - name: Set Artifact Name
         run: echo "artifact_name=${{ github.sha }}" >> $GITHUB_ENV
-      - uses: AutoModality/action-clean@v1
+      - name: 'Cleanup build folder'
+        run: |
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./
       - uses: actions/checkout@v3
       - run: git config --global user.name 'GitHub'
       - run: git config --global user.email 'github@goldenheartsgames.com'
