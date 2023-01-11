@@ -128,6 +128,8 @@ jobs:
       - name: Set Artifact Name
         run: echo "artifact_name=${{ github.sha }}" >> $GITHUB_ENV
         
+      - name: Clean Path
+        run: rm -rf ${{ env.WORKING_PATH }}
       - uses: actions/download-artifact@v3
         id: download
         with:
