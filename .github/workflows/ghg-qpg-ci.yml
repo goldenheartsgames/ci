@@ -25,14 +25,13 @@ on:
         required: true
 
 jobs:
-  setVars:
-    run:
-      echo "artifact_name=${{ github.sha }}" >> $GITHUB_ENV
   checkout:
     runs-on: ubuntu-latest
     env:
       WORKING_PATH: /home/runner/work
     steps:
+      - name: Set Artifact Name
+        run: echo "artifact_name=${{ github.sha }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - uses: actions/upload-artifact@v3
         with:
