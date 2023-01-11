@@ -35,6 +35,9 @@ jobs:
       - uses: actions/checkout@v3
       - run: git config --global user.name 'GitHub'
       - run: git config --global user.email 'github@goldenheartsgames.com'
+      - run: rm -rf ./rockdog
+      - run: git fetch
+      - run: git checkout qa2
       - run: git reset --hard
       - uses: actions/upload-artifact@v3
         with:
