@@ -33,6 +33,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           path: "testpath"
+      - run: cd testpath
       - run: git config --global user.name 'GitHub'
       - run: git config --global user.email 'github@goldenheartsgames.com'
       - run: rm -rf ./rockdog
