@@ -40,7 +40,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name }}
-          path: ${{ github.workspace }}/
+          path: ./
           retention-days: 1
   buildAtlas:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ env.artifact_name }}
-          path: ${{ github.workspace }}/
+          path: ./
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -121,7 +121,7 @@ jobs:
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ env.artifact_name }}
-          path: ${{ github.workspace }}
+          path: ./
           retention-days: 1
   buildProject:
     runs-on: ubuntu-latest
