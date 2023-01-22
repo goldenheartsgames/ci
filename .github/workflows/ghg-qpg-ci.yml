@@ -86,11 +86,11 @@ jobs:
         if: ${{ inputs.deployTo != '' }}
         run: |
           case ${{ inputs.deployTo }} in
-            "qa1")
+            "QA1")
               qpgKey="QA1_QPG_CONFIG"
               qpgPrefix="QA1_"
             ;;
-            "qa2")
+            "QA2")
               qpgKey="QA2_QPG_CONFIG"
               qpgPrefix="QA2_"
             ;;
