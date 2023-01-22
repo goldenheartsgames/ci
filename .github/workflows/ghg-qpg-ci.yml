@@ -12,6 +12,9 @@ on:
       useTPBundling:
         required: false
         type: boolean
+      deployTo:
+        required: false
+        type: string
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -56,6 +59,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Set QPG Key
+        if: ${{ inputs.deployTo == '' }}
         run: |
           case "${GITHUB_REF##*/}" in
             "develop")
@@ -73,6 +77,22 @@ jobs:
             "staging")
               qpgKey="STAGING_QPG_CONFIG"
               qpgPrefix="STAGING_"
+            ;;
+          esac
+          echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
+          echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
+          
+      - name: Set QPG Key Manual Deploy
+        if: ${{ inputs.deployTo != '' }}
+        run: |
+          case ${{ inputs.deployTo }} in
+            "qa1")
+              qpgKey="QA1_QPG_CONFIG"
+              qpgPrefix="QA1_"
+            ;;
+            "qa2")
+              qpgKey="QA2_QPG_CONFIG"
+              qpgPrefix="QA2_"
             ;;
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
