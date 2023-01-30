@@ -68,13 +68,14 @@ jobs:
 
       - name: Set Webapp Key
         run: |
+          echo "WHAT IS THE BRANCH: ${GITHUB_REF##*/}"
           case "${GITHUB_REF##*/}" in
             "develop")
               webappKey="DEV_WEBAPP_CONFIG"
               webappPrefix="DEV_"
             ;;
             "janus-ci")
-              webappKey="DEV_QPG_CONFIG"
+              webappKey="DEV_WEBAPP_CONFIG"
               webappPrefix="DEV_"
             ;;          
             "qa")
