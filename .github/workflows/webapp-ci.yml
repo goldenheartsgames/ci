@@ -73,6 +73,10 @@ jobs:
               webappKey="DEV_WEBAPP_CONFIG"
               webappPrefix="DEV_"
             ;;
+            "janus-ci")
+              webappKey="DEV_WEBAPP_CONFIG"
+              webappPrefix="DEV_"
+            ;;          
             "qa")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
