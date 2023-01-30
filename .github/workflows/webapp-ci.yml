@@ -73,6 +73,10 @@ jobs:
               webappKey="DEV_WEBAPP_CONFIG"
               webappPrefix="DEV_"
             ;;
+            "qa")
+              webappKey="QA2_WEBAPP_CONFIG"
+              webappPrefix="QA2_"
+            ;;          
             "qa1")
               webappKey="QA1_WEBAPP_CONFIG"
               webappPrefix="QA1_"
