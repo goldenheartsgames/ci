@@ -121,9 +121,9 @@ jobs:
       - name: Test
         run: |
           echo "TEST"
-          ls $GITHUB_WORKSPACE
+          ls "${GITHUB_WORKSPACE}"
           echo "TEST 2"
-          ls $GITHUB_WORKSPACE/dist
+          ls "${GITHUB_WORKSPACE}/dist"
 
       - name: Adding third party tracking tags
         run: |
