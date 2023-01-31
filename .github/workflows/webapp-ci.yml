@@ -120,14 +120,14 @@ jobs:
 
       - name: Adding third party tracking tags
         run: |
-          perl -pi -e "s/GOOGLE_TAG_MANAGER_SRC_URL/https:\\/\\/www.googletagmanager.com\\/ns.html?id=GTM-KVRQVJ5\\&gtm_auth=${WEBAPP_CONFIG_GTM_AUTH}\\&gtm_preview=${GTM_PREVIEW}\\&gtm_cookies_win=x/g" $GITHUB_WORKSPACE/index.html
-          perl -pi -e "s/!-- START WEBPUSH script/script/g" $GITHUB_WORKSPACE/index.html
-          perl -pi -e "s/WEBPUSH_APP_SERVICE_KEY/${WEBPUSH_APP_SERVICE_KEY}/g" $GITHUB_WORKSPACE/index.html
-          perl -pi -e "s/WEBPUSH_API_KEY/${WEBPUSH_API_KEY}/g" $GITHUB_WORKSPACE/index.html
-          perl -pi -e "s/ END WEBPUSH --//g" $GITHUB_WORKSPACE/index.html
+          perl -pi -e "s/GOOGLE_TAG_MANAGER_SRC_URL/https:\\/\\/www.googletagmanager.com\\/ns.html?id=GTM-KVRQVJ5\\&gtm_auth=${WEBAPP_CONFIG_GTM_AUTH}\\&gtm_preview=${GTM_PREVIEW}\\&gtm_cookies_win=x/g" /home/runner/work/webapp/webapp/$GITHUB_WORKSPACE/dist/index.html
+          perl -pi -e "s/!-- START WEBPUSH script/script/g" /home/runner/work/webapp/webapp/$GITHUB_WORKSPACE/dist/index.html
+          perl -pi -e "s/WEBPUSH_APP_SERVICE_KEY/${WEBPUSH_APP_SERVICE_KEY}/g" /home/runner/work/webapp/webapp/$GITHUB_WORKSPACE/dist/index.html
+          perl -pi -e "s/WEBPUSH_API_KEY/${WEBPUSH_API_KEY}/g" /home/runner/work/webapp/webapp/$GITHUB_WORKSPACE/dist/index.html
+          perl -pi -e "s/ END WEBPUSH --//g" /home/runner/work/webapp/webapp/$GITHUB_WORKSPACE/dist/index.html
 
       - name: Deploy
-        run: aws s3 sync ./dist/** s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/dist --delete
+        run: aws s3 sync /home/runner/work/webapp/webapp/$GITHUB_WORKSPACE/dist/** s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/dist --delete
 
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/dist/*"
