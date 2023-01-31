@@ -57,7 +57,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: webapp
-          path: $GITHUB_WORKSPACE/dist
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -120,7 +119,7 @@ jobs:
 
       - name: Test
         run: |
-          echo ls -la "./$GITHUB_WORKSPACE"
+          echo ls -la "$GITHUB_WORKSPACE"
 
       - name: Adding third party tracking tags
         run: |
