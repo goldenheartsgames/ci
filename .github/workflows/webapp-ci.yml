@@ -120,6 +120,10 @@ jobs:
               fi
           done
 
+      - name: Test
+        run: |
+          echo "TESTING GTM_AUTH: " . $WEBAPP_CONFIG_GTM_AUTH
+
 #      - name: Adding third party tracking tags
 #        run: |
 #          perl -pi -e "s/GOOGLE_TAG_MANAGER_SRC_URL/https:\\/\\/www.googletagmanager.com\\/ns.html?id=GTM-KVRQVJ5\\&gtm_auth=${GTM_AUTH}\\&gtm_preview=${GTM_PREVIEW}\\&gtm_cookies_win=x/g" ./dist/index.html
