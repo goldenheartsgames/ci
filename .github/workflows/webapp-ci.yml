@@ -106,8 +106,7 @@ jobs:
 
       - name: Convert variables
         run: |
-          echo "TEST KEY " . $webappKey
-          echo "TEST PREFIX " . $webappPrefix
+          echo "WHAT IS THE PREFIX " . $WEBAPP_PREFIX
           readarray -t vars < <(compgen -A variable)
           declare -p vars
           echo $vars
@@ -121,8 +120,13 @@ jobs:
               fi
           done
 
-      - name: TEST
-        run: aws s3 sync dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete
+#      - name: Adding third party tracking tags
+#        run: |
+#          perl -pi -e "s/GOOGLE_TAG_MANAGER_SRC_URL/https:\\/\\/www.googletagmanager.com\\/ns.html?id=GTM-KVRQVJ5\\&gtm_auth=${GTM_AUTH}\\&gtm_preview=${GTM_PREVIEW}\\&gtm_cookies_win=x/g" ./dist/index.html
+#          perl -pi -e "s/!-- START WEBPUSH script/script/g" ./dist/index.html
+#          perl -pi -e "s/WEBPUSH_APP_SERVICE_KEY/${WEBPUSH_APP_SERVICE_KEY}/g" ./dist/index.html
+#          perl -pi -e "s/WEBPUSH_API_KEY/${WEBPUSH_API_KEY}/g" ./dist/index.html
+#          perl -pi -e "s/ END WEBPUSH --//g" ./dist/index.html
   cleanup:
     runs-on: ubuntu-latest
     needs: [checkoutAndBuild, deployment]
