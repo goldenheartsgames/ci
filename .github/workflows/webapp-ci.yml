@@ -120,16 +120,7 @@ jobs:
 
       - name: Test
         run: |
-          echo "TEST"
-          ls -la "$GITHUB_WORKSPACE"
-          echo "TEST |||"
-          pwd
-          echo "TEST 0"
-          ls -la .
-          echo "TEST 1"
-          ls "${GITHUB_WORKSPACE}"
-          echo "TEST 2"
-          ls "${GITHUB_WORKSPACE}/dist"
+          echo ls -la "./$GITHUB_WORKSPACE"
 
       - name: Adding third party tracking tags
         run: |
