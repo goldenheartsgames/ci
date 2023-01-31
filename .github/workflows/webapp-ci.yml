@@ -68,7 +68,6 @@ jobs:
 
       - name: Set Webapp Key
         run: |
-          echo "WHAT IS THE BRANCH: ${GITHUB_REF##*/}"
           case "${GITHUB_REF##*/}" in
             "develop")
               webappKey="DEV_WEBAPP_CONFIG"
@@ -106,7 +105,6 @@ jobs:
 
       - name: Convert variables
         run: |
-          echo "WHAT IS THE PREFIX " . $WEBAPP_PREFIX
           readarray -t vars < <(compgen -A variable)
           declare -p vars
           echo $vars
@@ -132,7 +130,7 @@ jobs:
         run: aws s3 sync ./dist/** s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/dist --profile ghg --delete
 
       - name: Invalidate
-        run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/${{ inputs.gameName }}/*"
+        run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/dist/*"
   cleanup:
     runs-on: ubuntu-latest
     needs: [checkoutAndBuild, deployment]
