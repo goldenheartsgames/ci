@@ -127,7 +127,7 @@ jobs:
           perl -pi -e "s/ END WEBPUSH --//g" ./dist/index.html
 
       - name: Deploy
-        run: aws s3 sync ./dist/** s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/dist --delete
+        run: aws s3 sync ./dist/* s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/dist --delete
 
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/dist/*"
