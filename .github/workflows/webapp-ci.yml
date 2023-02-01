@@ -46,17 +46,18 @@ jobs:
           node-version: 16
       - run: npm ci --force
       - run: node --max_old_space_size=2048 ${GITHUB_WORKSPACE}/node_modules/@angular/cli/bin/ng build --configuration production --aot=true --buildOptimizer=true --output-hashing=all --crossOrigin=use-credentials --output-path=./dist
-      - uses: actions/upload-artifact@v3
-        with:
-          name: webapp
-          path: ./dist
-  deployment:
-    runs-on: ubuntu-latest
-    needs: [ checkoutAndBuild ]
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: webapp
+
+#      - uses: actions/upload-artifact@v3
+#        with:
+#          name: webapp
+#          path: ./dist
+#  deployment:
+#    runs-on: ubuntu-latest
+#    needs: [ checkoutAndBuild ]
+#    steps:
+#      - uses: actions/download-artifact@v3
+#        with:
+#          name: webapp
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -117,27 +118,23 @@ jobs:
               fi
           done
 
-      - name: Test
-        run: |
-          echo ls -la "$GITHUB_WORKSPACE"
-
       - name: Adding third party tracking tags
         run: |
-          perl -pi -e "s/GOOGLE_TAG_MANAGER_SRC_URL/https:\\/\\/www.googletagmanager.com\\/ns.html?id=GTM-KVRQVJ5\\&gtm_auth=${WEBAPP_CONFIG_GTM_AUTH}\\&gtm_preview=${GTM_PREVIEW}\\&gtm_cookies_win=x/g" $GITHUB_WORKSPACE/dist/index.html
-          perl -pi -e "s/!-- START WEBPUSH script/script/g" $GITHUB_WORKSPACE/dist/index.html
-          perl -pi -e "s/WEBPUSH_APP_SERVICE_KEY/${WEBPUSH_APP_SERVICE_KEY}/g" $GITHUB_WORKSPACE/dist/index.html
-          perl -pi -e "s/WEBPUSH_API_KEY/${WEBPUSH_API_KEY}/g" $GITHUB_WORKSPACE/dist/index.html
-          perl -pi -e "s/ END WEBPUSH --//g" $GITHUB_WORKSPACE/dist/index.html
+          perl -pi -e "s/GOOGLE_TAG_MANAGER_SRC_URL/https:\\/\\/www.googletagmanager.com\\/ns.html?id=GTM-KVRQVJ5\\&gtm_auth=${WEBAPP_CONFIG_GTM_AUTH}\\&gtm_preview=${GTM_PREVIEW}\\&gtm_cookies_win=x/g" ./dist/index.html
+          perl -pi -e "s/!-- START WEBPUSH script/script/g" ./dist/index.html
+          perl -pi -e "s/WEBPUSH_APP_SERVICE_KEY/${WEBPUSH_APP_SERVICE_KEY}/g" ./dist/index.html
+          perl -pi -e "s/WEBPUSH_API_KEY/${WEBPUSH_API_KEY}/g" ./dist/index.html
+          perl -pi -e "s/ END WEBPUSH --//g" ./dist/index.html
 
       - name: Deploy
-        run: aws s3 sync $GITHUB_WORKSPACE/dist/** s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/dist --delete
+        run: aws s3 sync ./dist/** s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/dist --delete
 
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/dist/*"
-  cleanup:
-    runs-on: ubuntu-latest
-    needs: [checkoutAndBuild, deployment]
-    steps:
-      - uses: geekyeggo/delete-artifact@v1
-        with:
-          name: webapp
+#  cleanup:
+#    runs-on: ubuntu-latest
+#    needs: [checkoutAndBuild, deployment]
+#    steps:
+#      - uses: geekyeggo/delete-artifact@v1
+#        with:
+#          name: webapp
