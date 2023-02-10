@@ -72,11 +72,7 @@ jobs:
             "develop")
               webappKey="DEV_WEBAPP_CONFIG"
               webappPrefix="DEV_"
-            ;;
-            "janus-ci")
-              webappKey="DEV_WEBAPP_CONFIG"
-              webappPrefix="DEV_"
-            ;;          
+            ;;     
             "qa")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
@@ -85,6 +81,10 @@ jobs:
               webappKey="QA1_WEBAPP_CONFIG"
               webappPrefix="QA1_"
             ;;
+            "paysafe")
+              webappKey="QA1_WEBAPP_CONFIG"
+              webappPrefix="QA1_"
+            ;;          
             "qa2")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
