@@ -2,7 +2,7 @@ name: WebApp CI/CD
 
 on:
   push:
-    branches: [ develop, qa1, qa2, staging ]
+    branches: [ develop, qa1, qa2, staging, paysafe ]
   workflow_dispatch:
   workflow_call:
     secrets:
