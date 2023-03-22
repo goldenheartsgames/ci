@@ -16,6 +16,8 @@ on:
         required: true
       NODE_AUTH_TOKEN:
         required: true
+      WEBPAGETEST_API_KEY:
+        required: true
 
 jobs:
   checkoutAndBuild:
