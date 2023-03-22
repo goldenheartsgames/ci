@@ -85,7 +85,7 @@ jobs:
           esac
           echo "WEBAPP_KEY=$(echo $webappKey)" >> $GITHUB_ENV
           echo "WEBAPP_PREFIX=$(echo $webappPrefix)" >> $GITHUB_ENV
-          echo "WEBAPP_URLS=$(echo webappUrls)" >> $GITHUB_ENV
+          echo "WEBAPP_URLS=$(echo $webappUrls)" >> $GITHUB_ENV
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
