@@ -47,18 +47,6 @@ jobs:
       - run: npm ci --force
       - run: node --max_old_space_size=2048 ${GITHUB_WORKSPACE}/node_modules/@angular/cli/bin/ng build --configuration production --aot=true --buildOptimizer=true --output-hashing=all --crossOrigin=use-credentials --output-path=./dist
 
-#      - uses: actions/upload-artifact@v3
-#        with:
-#          name: webapp
-#          path: ./dist
-#  deployment:
-#    runs-on: ubuntu-latest
-#    needs: [ checkoutAndBuild ]
-#    steps:
-#      - uses: actions/download-artifact@v3
-#        with:
-#          name: webapp
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -76,6 +64,7 @@ jobs:
             "qa")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
+              webappUrls="https://qa2.goldenheartsgames.com/"
             ;;          
             "qa1")
               webappKey="QA1_WEBAPP_CONFIG"
@@ -96,6 +85,7 @@ jobs:
           esac
           echo "WEBAPP_KEY=$(echo $webappKey)" >> $GITHUB_ENV
           echo "WEBAPP_PREFIX=$(echo $webappPrefix)" >> $GITHUB_ENV
+          echo "WEBAPP_URLS=$(echo webappUrls)" >> $GITHUB_ENV
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
@@ -131,10 +121,10 @@ jobs:
 
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/dist/*"
-#  cleanup:
-#    runs-on: ubuntu-latest
-#    needs: [checkoutAndBuild, deployment]
-#    steps:
-#      - uses: geekyeggo/delete-artifact@v1
-#        with:
-#          name: webapp
+
+      - name: WebPageTest
+        if: ${{ env.WEBAPP_URLS != '' }}
+        uses: WPO-Foundation/webpagetest-github-action@v1.1.2
+        with:
+          apiKey: ${{ secrets.WEBPAGETEST_API_KEY }}
+          urls: ${{ env.WEBAPP_URLS }}
