@@ -122,7 +122,7 @@ jobs:
         run: aws s3 sync ./dist s3://${WEBAPP_CONFIG_WEBAPP_BUCKET} --delete
 
       - name: Invalidate
-        run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/dist/*"
+        run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/*"
 
       - name: WebPageTest
         if: ${{ env.WEBAPP_URLS != '' }}
