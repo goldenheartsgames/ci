@@ -229,13 +229,13 @@ jobs:
           done
 
       - name: Deploy Game
-        run: aws s3 cp dist s3://${DEV_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
+        run: aws s3 cp dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
 
       - name: Sync game
-        run: aws s3 sync dist s3://${DEV_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
+        run: aws s3 sync dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
 
       - name: Invalidate dashboard cloudfront
-        run: aws cloudfront create-invalidation --distribution-id ${DEV_QPG_CONFIG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
+        run: aws cloudfront create-invalidation --distribution-id ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
