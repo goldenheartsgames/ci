@@ -105,11 +105,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Set QPG Key
+        run: |
+          qpgKey="DEV_QPG_CONFIG"
+          qpgPrefix="DEV_"
+
+          echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
+          echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
+
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
         with:
-          secrets: |
-            DEV_QPG_CONFIG
+          secrets: ${{ env.QPG_KEY }}
           parse-json: true
 
       - name: Deploy Game
