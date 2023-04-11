@@ -94,7 +94,7 @@ jobs:
           echo "WEBAPP_KEY=$(echo $webappKey)" >> $GITHUB_ENV
           echo "WEBAPP_PREFIX=$(echo $webappPrefix)" >> $GITHUB_ENV
           echo "WEBAPP_URLS=$(echo $webappUrls)" >> $GITHUB_ENV
-          echo "WEBAPP_CONFIGURATION=$(echo webappConfiguration)" >> $GITHUB_ENV
+          echo "WEBAPP_CONFIGURATION=$(echo $webappConfiguration)" >> $GITHUB_ENV
 
       - run: node --max_old_space_size=2048 ${GITHUB_WORKSPACE}/node_modules/@angular/cli/bin/ng build --configuration ${{ env.WEBAPP_CONFIGURATION }} --aot=true --buildOptimizer=true --output-hashing=all --crossOrigin=use-credentials --output-path=./dist
 
