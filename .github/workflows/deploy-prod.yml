@@ -58,7 +58,7 @@ jobs:
         if: ${{ inputs.useTPBundling != '' }}
         with:
           secrets: |
-            DEV_QPG_CONFIG
+            PROD_QPG_CONFIG
           parse-json: true
 
       - name: Install TP and dependencies
@@ -107,8 +107,8 @@ jobs:
 
       - name: Set QPG Key
         run: |
-          qpgKey="DEV_QPG_CONFIG"
-          qpgPrefix="DEV_"
+          qpgKey="PROD_QPG_CONFIG"
+          qpgPrefix="PROD_"
 
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
           echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
@@ -120,13 +120,13 @@ jobs:
           parse-json: true
 
       - name: Deploy Game
-        run: aws s3 cp dist s3://${DEV_QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
+        run: aws s3 cp dist s3://${PROD_QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
 
       - name: Sync game
-        run: aws s3 sync dist s3://${DEV_QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
+        run: aws s3 sync dist s3://${PROD_QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
 
       - name: Invalidate dashboard cloudfront
-        run: aws cloudfront create-invalidation --distribution-id ${DEV_QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
+        run: aws cloudfront create-invalidation --distribution-id ${PROD_QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
