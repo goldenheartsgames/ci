@@ -41,16 +41,16 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         if: ${{ inputs.useTPBundling != '' }}
         with:
-          aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.DEV_AWS_REGION }}
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.PROD_AWS_REGION }}
           
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
         if: ${{ inputs.useTPBundling != '' }}
         with:
           secrets: |
-            DEV_QPG_CONFIG
+            PROD_QPG_CONFIG
           parse-json: true
 
       - name: Install TP and dependencies
@@ -60,7 +60,7 @@ jobs:
           curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
           sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
           echo agree | TexturePacker --version
-          TexturePacker --activate-license ${DEV_QPG_CONFIG_TEXTURE_PACKER_KEY} ${{ github.workspace }}/raw_assets/*.tps
+          TexturePacker --activate-license ${PROD_QPG_CONFIG_TEXTURE_PACKER_KEY} ${{ github.workspace }}/raw_assets/*.tps
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.useTPBundling != '' }}
         with:
@@ -94,26 +94,26 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         if: ${{ inputs.useTPBundling != '' }}
         with:
-          aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.DEV_AWS_REGION }}
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.PROD_AWS_REGION }}
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
         if: ${{ inputs.useTPBundling != '' }}
         with:
           secrets: |
-            DEV_QPG_CONFIG
+            PROD_QPG_CONFIG
           parse-json: true
 
       - name: Deploy Game
-        run: aws s3 cp dist s3://${DEV_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
+        run: aws s3 cp dist s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
 
       - name: Sync game
-        run: aws s3 sync dist s3://${DEV_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
+        run: aws s3 sync dist s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
 
       - name: Invalidate dashboard cloudfront
-        run: aws cloudfront create-invalidation --distribution-id ${DEV_QPG_CONFIG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
+        run: aws cloudfront create-invalidation --distribution-id ${PROD_QPG_CONFIG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
