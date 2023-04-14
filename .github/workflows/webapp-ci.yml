@@ -2,7 +2,7 @@ name: WebApp CI/CD
 
 on:
   push:
-    branches: [ develop, qa1, qa2, staging, paysafe ]
+    branches: [ develop, qa1, qa2, staging ]
   workflow_dispatch:
   workflow_call:
     secrets:
@@ -74,12 +74,7 @@ jobs:
               webappKey="QA1_WEBAPP_CONFIG"
               webappPrefix="QA1_"
               webappConfiguration="qa1"
-            ;;
-            "paysafe")
-              webappKey="QA1_WEBAPP_CONFIG"
-              webappPrefix="QA1_"
-              webappConfiguration="qa1"
-            ;;          
+            ;;    
             "qa2")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
