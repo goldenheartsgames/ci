@@ -127,7 +127,8 @@ jobs:
 
       - name: Copy static files
         run: |
-          ls -la $GITHUB_WORKSPACE
+          aws s3 sync $GITHUB_WORKSPACE/sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml
+          aws s3 sync $GITHUB_WORKSPACE/vendor/apple-developer-merchantid-domain-association s3://${WEBAPP_CONFIG_WEBAPP_BUCKET/.well-known/apple-developer-merchantid-domain-association
 
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/*"
