@@ -127,7 +127,8 @@ jobs:
 
       - name: Copy static files
         run: |
-          ls /home/runner/work
+          aws s3 sync ${{ env.WORKING_PATH }}/webapp/sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml
+          aws s3 sync ${{ env.WORKING_PATH }}/webapp/vendor/apple-developer-merchantid-domain-association s3://${WEBAPP_CONFIG_WEBAPP_BUCKET/.well-known/apple-developer-merchantid-domain-association
 
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/*"
