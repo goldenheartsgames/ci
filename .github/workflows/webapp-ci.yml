@@ -127,7 +127,7 @@ jobs:
 
       - name: Copy static files
         run: |
-          ls -la ${{ env.WORKING_PATH }}/webapp
+          ls -la ${{ env.WORKING_PATH }}/webapp/webapp
           aws s3 sync ${{ env.WORKING_PATH }}/webapp/sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml
           aws s3 sync ${{ env.WORKING_PATH }}/webapp/vendor/apple-developer-merchantid-domain-association s3://${WEBAPP_CONFIG_WEBAPP_BUCKET/.well-known/apple-developer-merchantid-domain-association
 
