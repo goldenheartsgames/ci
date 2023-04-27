@@ -110,7 +110,7 @@ jobs:
               then
                 var=${item/$WEBAPP_PREFIX/}
                 echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
-                  echo "key: " . $item
+                echo "key: " . $item
               fi
           done
 
@@ -127,8 +127,8 @@ jobs:
 
       - name: Copy static files
         run: |
-          aws s3 sync ${GITHUB_WORKSPACE}/../src/sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml
-          aws s3 sync ${GITHUB_WORKSPACE}/../vendor/apple-developer-merchantid-domain-association s3://${WEBAPP_CONFIG_WEBAPP_BUCKET/.well-known/apple-developer-merchantid-domain-association
+          aws s3 sync ${{ env.WORKING_PATH }}/webapp/src/sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml
+          aws s3 sync ${{ env.WORKING_PATH }}/webapp/vendor/apple-developer-merchantid-domain-association s3://${WEBAPP_CONFIG_WEBAPP_BUCKET/.well-known/apple-developer-merchantid-domain-association
 
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/*"
