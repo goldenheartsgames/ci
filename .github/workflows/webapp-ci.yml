@@ -149,7 +149,7 @@ jobs:
 
       - name: Test...
         run: |
-          ls -la $GITHUB_WORKSPACE
+          echo "${{ steps.webpagetest.outputs.json }}"
 
 #      - name: Slack Notification
 #        if: ${{ env.WEBAPP_URLS != '' }}
