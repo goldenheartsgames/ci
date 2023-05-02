@@ -149,7 +149,7 @@ jobs:
 
       - name: Test...
         run: |
-          echo "${{ steps.webpagetest.outputs.json }}"
+          echo "${{ JSON.stringify(steps.webpagetest.outputs) }}"
 
 #      - name: Slack Notification
 #        if: ${{ env.WEBAPP_URLS != '' }}
