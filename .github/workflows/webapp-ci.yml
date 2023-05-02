@@ -134,8 +134,20 @@ jobs:
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/*"
 
       - name: WebPageTest
+        id: webpagetest
         if: ${{ env.WEBAPP_URLS != '' }}
         uses: WPO-Foundation/webpagetest-github-action@v1.1.2
         with:
           apiKey: ${{ secrets.WEBPAGETEST_API_KEY }}
           urls: ${{ env.WEBAPP_URLS }}
+
+      - name: Slack Notification
+        if: ${{ env.WEBAPP_URLS != '' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: alerts-webpagetest
+          SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
+          SLACK_TITLE: WPT - Results
+          SLACK_MESSAGE: ${{join(steps.webpagetest.outputs.*, '\n')}}
+          SLACK_USERNAME: ghg-deploy
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
