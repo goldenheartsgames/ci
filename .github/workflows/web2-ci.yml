@@ -25,6 +25,10 @@ jobs:
     env:
       WORKING_PATH: /home/runner/work
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/fermium
+
       - uses: actions/checkout@v3
 
       - name: Generate a buildtime
