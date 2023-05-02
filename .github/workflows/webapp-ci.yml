@@ -141,15 +141,15 @@ jobs:
           apiKey: ${{ secrets.WEBPAGETEST_API_KEY }}
           urls: ${{ env.WEBAPP_URLS }}
 
-      - name: Get WebPageTest Results
-        uses: actions/download-artifact@v2
-        with:
-          name: webpagetest-results
-          path: results
+#      - name: Get WebPageTest Results
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: webpagetest-results
+#          path: results
 
       - name: Test...
         run: |
-          cat results/webpagetest-results.json
+          la -la $GITHUB_WORKSPACE
 
 #      - name: Slack Notification
 #        if: ${{ env.WEBAPP_URLS != '' }}
