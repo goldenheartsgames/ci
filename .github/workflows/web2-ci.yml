@@ -1,0 +1,122 @@
+name: Web2 CI/CD
+
+on:
+  push:
+    branches: [ develop, qa1, qa2, staging ]
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_REGION:
+        required: true
+      SLACK_WEBHOOK:
+        required: true
+      NODE_AUTH_TOKEN:
+        required: true
+      WEBPAGETEST_API_KEY:
+        required: true
+
+jobs:
+  checkoutAndBuild:
+    runs-on: ubuntu-latest
+    env:
+      WORKING_PATH: /home/runner/work
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: npm ci --force
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set Webapp Key
+        run: |
+          webappConfiguration="production"
+          case "${GITHUB_REF##*/}" in
+            "develop")
+              webappKey="DEV_WEBAPP_CONFIG"
+              webappPrefix="DEV_"
+              webappConfiguration="dev"
+            ;;     
+            "qa")
+              webappKey="QA2_WEBAPP_CONFIG"
+              webappPrefix="QA2_"
+              webappUrls="https://qa2.goldenheartsgames.com/"
+              webappConfiguration="qa2"
+            ;;          
+            "qa1")
+              webappKey="QA1_WEBAPP_CONFIG"
+              webappPrefix="QA1_"
+              webappConfiguration="qa1"
+            ;;    
+            "qa2")
+              webappKey="QA2_WEBAPP_CONFIG"
+              webappPrefix="QA2_"
+              webappConfiguration="qa2"
+            ;;
+            "staging")
+              webappKey="STAGING_WEBAPP_CONFIG"
+              webappPrefix="STAGING_"
+              webappConfiguration="staging"
+            ;;
+          esac
+          echo "WEBAPP_KEY=$(echo $webappKey)" >> $GITHUB_ENV
+          echo "WEBAPP_PREFIX=$(echo $webappPrefix)" >> $GITHUB_ENV
+          echo "WEBAPP_URLS=$(echo $webappUrls)" >> $GITHUB_ENV
+          echo "WEBAPP_CONFIGURATION=$(echo $webappConfiguration)" >> $GITHUB_ENV
+
+#      - run: node --max_old_space_size=2048 ${GITHUB_WORKSPACE}/node_modules/@angular/cli/bin/ng build --configuration ${{ env.WEBAPP_CONFIGURATION }} --aot=true --buildOptimizer=true --output-hashing=all --crossOrigin=use-credentials --output-path=./dist
+#
+#      - name: Read secrets from AWS Secrets Manager into environment variables
+#        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+#        with:
+#          secrets: ${{ env.WEBAPP_KEY }}
+#          parse-json: true
+#
+#      - name: Convert variables
+#        run: |
+#          readarray -t vars < <(compgen -A variable)
+#          declare -p vars
+#          echo $vars
+#          for item in "${vars[@]}"
+#          do
+#              if  [[ $item == $WEBAPP_PREFIX* ]];
+#              then
+#                var=${item/$WEBAPP_PREFIX/}
+#                echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
+#                echo "key: " . $item
+#              fi
+#          done
+#
+#      - name: Adding third party tracking tags
+#        run: |
+#          perl -pi -e "s/GOOGLE_TAG_MANAGER_SRC_URL/https:\\/\\/www.googletagmanager.com\\/ns.html?id=GTM-KVRQVJ5\\&gtm_auth=${WEBAPP_CONFIG_GTM_AUTH}\\&gtm_preview=${GTM_PREVIEW}\\&gtm_cookies_win=x/g" ./dist/index.html
+#          perl -pi -e "s/!-- START WEBPUSH script/script/g" ./dist/index.html
+#          perl -pi -e "s/WEBPUSH_APP_SERVICE_KEY/${WEBPUSH_APP_SERVICE_KEY}/g" ./dist/index.html
+#          perl -pi -e "s/WEBPUSH_API_KEY/${WEBPUSH_API_KEY}/g" ./dist/index.html
+#          perl -pi -e "s/ END WEBPUSH --//g" ./dist/index.html
+#
+#      - name: Deploy
+#        run: aws s3 sync ./dist s3://${WEBAPP_CONFIG_WEBAPP_BUCKET} --delete
+#
+#      - name: Copy static files
+#        run: |
+#          aws s3 cp $GITHUB_WORKSPACE/sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml --content-type "text/html; charset=UTF-8" --content-disposition "inline"
+#          aws s3 cp $GITHUB_WORKSPACE/vendor/apple-developer-merchantid-domain-association s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/.well-known/apple-developer-merchantid-domain-association --content-type "text/html; charset=UTF-8" --content-disposition "inline"
+#
+#      - name: Invalidate
+#        run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/*"
+#
+#      - name: WebPageTest
+#        if: ${{ env.WEBAPP_URLS != '' }}
+#        uses: WPO-Foundation/webpagetest-github-action@v1.1.2
+#        with:
+#          apiKey: ${{ secrets.WEBPAGETEST_API_KEY }}
+#          urls: ${{ env.WEBAPP_URLS }}
