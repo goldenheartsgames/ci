@@ -141,15 +141,25 @@ jobs:
           apiKey: ${{ secrets.WEBPAGETEST_API_KEY }}
           urls: ${{ env.WEBAPP_URLS }}
 
-      - name: Slack Notification
-        if: ${{ env.WEBAPP_URLS != '' }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: alerts-webpagetest
-          SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
-          SLACK_TITLE: WPT - Results
-          SLACK_MESSAGE: |
-            Test Results: ${{ steps.webpagetest.outputs.json }}
-            Test Results URL: ${{ steps.webpagetest.outputs.resultUrl }}
-          SLACK_USERNAME: ghg-deploy
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Get WebPageTest Results
+        uses: actions/download-artifact@v2
+        with:
+          name: webpagetest-results
+          path: results
+
+      - name: Test...
+        run: |
+          cat results/webpagetest-results.json
+
+#      - name: Slack Notification
+#        if: ${{ env.WEBAPP_URLS != '' }}
+#        uses: rtCamp/action-slack-notify@v2
+#        env:
+#          SLACK_CHANNEL: alerts-webpagetest
+#          SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
+#          SLACK_TITLE: WPT - Results
+#          SLACK_MESSAGE: |
+#            Test Results: ${{ steps.webpagetest.outputs.json }}
+#            Test Results URL: ${{ steps.webpagetest.outputs.resultUrl }}
+#          SLACK_USERNAME: ghg-deploy
+#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
