@@ -2,7 +2,7 @@ name: QPG CI/CD
 
 on:
   push:
-    branches: [ develop, qa1, qa2, staging ]
+    branches: [ develop, qa, qa1, qa2, staging ]
   workflow_dispatch:
   workflow_call:
     inputs:
