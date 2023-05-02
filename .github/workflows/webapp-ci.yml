@@ -149,8 +149,7 @@ jobs:
           SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
           SLACK_TITLE: WPT - Results
           SLACK_MESSAGE: |
-            Test Results URL: ${{ steps.webpagetest.outputs.test_results_url }}
-            Median First Contentful Paint Time: ${{ steps.webpagetest.outputs.median_fcp }}
-            Median Speed Index Time: ${{ steps.webpagetest.outputs.median_si }}
+            Test Results: ${{ steps.webpagetest.outputs.json }}
+            Test Results URL: ${{ steps.webpagetest.outputs.resultUrl }}
           SLACK_USERNAME: ghg-deploy
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
