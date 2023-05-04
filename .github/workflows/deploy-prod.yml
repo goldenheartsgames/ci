@@ -74,7 +74,7 @@ jobs:
 
   buildProject:
     runs-on: ubuntu-latest
-    needs: [checkout, buildAtlas]
+    needs: [checkout]
     steps:
       - uses: actions/download-artifact@v3
         id: download
@@ -128,6 +128,7 @@ jobs:
           SLACK_TITLE: CI - ${{ inputs.gameName }}
           SLACK_USERNAME: ghg-deploy
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
   cleanup:
     runs-on: ubuntu-latest
     needs: [buildProject]
