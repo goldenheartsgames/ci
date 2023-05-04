@@ -112,7 +112,6 @@ jobs:
 
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
           echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
-          echo ${QPG_CONFIG_QPG_GHG_QPG_URL}
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
@@ -121,10 +120,10 @@ jobs:
           parse-json: true
 
       - name: Deploy Game
-        run: aws s3 cp dist s3://${PROD_QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
+        run: aws s3 cp dist s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
 
       - name: Sync game
-        run: aws s3 sync dist s3://${PROD_QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
+        run: aws s3 sync dist s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
 
       - name: Invalidate dashboard cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${PROD_QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
