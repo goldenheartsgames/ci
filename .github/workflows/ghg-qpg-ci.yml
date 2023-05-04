@@ -190,7 +190,7 @@ jobs:
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
           echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
 
- - name: Set QPG Key Manual Deploy
+      - name: Set QPG Key Manual Deploy
         if: ${{ inputs.deployTo != '' }}
         run: |
           case ${{ inputs.deployTo }} in
@@ -205,7 +205,6 @@ jobs:
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
           echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
-
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
