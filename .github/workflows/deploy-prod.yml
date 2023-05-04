@@ -113,7 +113,7 @@ jobs:
       - name: test
         run: |
         echo ${PROD_QPG_CONFIG_GHG_QPG_URL}
-        echo "${PROD_QPG_CONFIG_GHG_QPG_URL}""
+        echo "${PROD_QPG_CONFIG_GHG_QPG_URL}"
         echo ${{PROD_QPG_CONFIG_GHG_QPG_URL}}
         echo "${{PROD_QPG_CONFIG_GHG_QPG_URL}}"
         echo PROD_QPG_CONFIG_GHG_QPG_URL
