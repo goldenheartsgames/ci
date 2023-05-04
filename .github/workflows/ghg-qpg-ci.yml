@@ -70,7 +70,7 @@ jobs:
               qpgKey="QA1_QPG_CONFIG"
               qpgPrefix="QA1_"
             ;;
-            "qa2")
+            "qa")
               qpgKey="QA2_QPG_CONFIG"
               qpgPrefix="QA2_"
             ;;
@@ -178,7 +178,7 @@ jobs:
               qpgKey="QA1_QPG_CONFIG"
               qpgPrefix="QA1_"
             ;;
-            "qa2")
+            "qa")
               qpgKey="QA2_QPG_CONFIG"
               qpgPrefix="QA2_"
             ;;
