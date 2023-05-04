@@ -110,6 +110,17 @@ jobs:
             PROD_QPG_CONFIG
           parse-json: true
 
+      - name: test
+        run: |
+        echo ${PROD_QPG_CONFIG_GHG_QPG_URL}
+        echo "${PROD_QPG_CONFIG_GHG_QPG_URL}""
+        echo ${{PROD_QPG_CONFIG_GHG_QPG_URL}}
+        echo "${{PROD_QPG_CONFIG_GHG_QPG_URL}}"
+        echo PROD_QPG_CONFIG_GHG_QPG_URL
+        echo "PROD_QPG_CONFIG_GHG_QPG_URL"
+        echo $PROD_QPG_CONFIG_GHG_QPG_URL
+        echo "$PROD_QPG_CONFIG_GHG_QPG_URL"
+
       - name: Deploy Game
         run: aws s3 cp dist s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
 
