@@ -2,7 +2,7 @@ name: QPG CI/CD
 
 on:
   push:
-    branches: [ develop, qa1, qa2, staging ]
+    branches: [develop, qa, staging]
   workflow_dispatch:
   workflow_call:
     inputs:
@@ -81,7 +81,7 @@ jobs:
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
           echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
-          
+
       - name: Set QPG Key Manual Deploy
         if: ${{ inputs.deployTo != '' }}
         run: |
@@ -90,9 +90,9 @@ jobs:
               qpgKey="QA1_QPG_CONFIG"
               qpgPrefix="QA1_"
             ;;
-            "QA2")
-              qpgKey="QA2_QPG_CONFIG"
-              qpgPrefix="QA2_"
+            "develop")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
             ;;
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
@@ -118,7 +118,7 @@ jobs:
                 echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
                   echo "key: " . $item
               fi
-          done          
+          done
 
       - name: Install TP and dependencies
         if: ${{ inputs.useTPBundling != '' }}
@@ -146,8 +146,8 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
 
