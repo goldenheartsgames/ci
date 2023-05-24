@@ -63,6 +63,7 @@ jobs:
           parse-json: true
 
       - name: Install TP and dependencies
+              if: ${{ inputs.useTPBundling != '' }}
         run: |
           sudo apt-get update
           curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
