@@ -96,7 +96,7 @@ jobs:
           echo "WEBAPP_URLS=$(echo $webappUrls)" >> $GITHUB_ENV
           echo "WEBAPP_CONFIGURATION=$(echo $webappConfiguration)" >> $GITHUB_ENV
 
-      - run: node --max_old_space_size=2048 ${GITHUB_WORKSPACE}/node_modules/@angular/cli/bin/ng build --configuration ${{ env.WEBAPP_CONFIGURATION }} --aot=true --buildOptimizer=true --output-hashing=all --crossOrigin=use-credentials --output-path=./dist
+      - run: node --max_old_space_size=2048 ${GITHUB_WORKSPACE}/node_modules/@angular/cli/bin/ng build --configuration ${{ env.WEBAPP_CONFIGURATION }} --aot=true --output-hashing=all --output-path=./dist
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
