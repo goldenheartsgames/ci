@@ -74,7 +74,12 @@ jobs:
               webappKey="QA1_WEBAPP_CONFIG"
               webappPrefix="QA1_"
               webappConfiguration="qa1"
-            ;;    
+            ;;
+            "angular-upgrade")
+              webappKey="QA1_WEBAPP_CONFIG"
+              webappPrefix="QA1_"
+              webappConfiguration="qa1"
+            ;;          
             "qa2")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
