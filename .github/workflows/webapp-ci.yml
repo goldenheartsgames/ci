@@ -46,7 +46,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci --force
+      - run: npm i --force
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
