@@ -128,7 +128,7 @@ jobs:
           perl -pi -e "s/ END WEBPUSH --//g" ./dist/index.html
 
       - name: Deploy
-        run: aws s3 sync ./dist s3://${WEBAPP_CONFIG_WEBAPP_BUCKET} --delete
+        run: aws s3 sync ./dist s3://${WEBAPP_CONFIG_WEBAPP_BUCKET} --delete --exclude "pre/*"
 
       - name: Copy static files
         run: |
