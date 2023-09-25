@@ -2,7 +2,7 @@ name: Web2 CI/CD
 
 on:
   push:
-    branches: [ develop, qa1, qa2, staging ]
+    branches: [ develop, qa, qa1, qa2, platypus-milestone-1.0 ]
   workflow_dispatch:
   workflow_call:
     secrets:
@@ -31,22 +31,34 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - name: Generate a buildtime
+      - name: Generate a buildtime and client version
         run: |
-          APP_CONFIG_PATH="${GITHUB_WORKSPACE}apps/webapp/src/app/app-config.module.ts"
-          echo $APP_CONFIG_PATH
-          SED_SEARCH_STRING="BUILD_DATE_TIME"
-          ISO8601_OFFSET_REGEX="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[\+-][0-9]{4}"
-          ISO8601_DATETIME_UTC=$(date -u +%Y-%m-%dT%H:%M:%S%z)
-          ISO8601_DATETIME_UTC_OFFSET=$(echo $ISO8601_DATETIME_UTC | perl -pe "s/\+0000/\-0500/g")
+          APP_SETTINGS_PATH="${GITHUB_WORKSPACE}apps/webapp/src/environments/shared/app.settings.ts"
+          echo $APP_SETTINGS_PATH
+          BUILD_DATE_SEARCH_STRING="BUILD_DATE_TIME"
+          BUILD_DATE_REGEX="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[\+-][0-9]{4}"
+          BUILD_DATE_UTC=$(date -u +%Y-%m-%dT%H:%M:%S%z)
 
-          if grep -Fq "$SED_SEARCH_STRING" $APP_CONFIG_PATH
+          if grep -Fq "$BUILD_DATE_SEARCH_STRING" $APP_SETTINGS_PATH
           then
-              echo "Created new buildtime"
-              perl -pi -e "s/BUILD_DATE_TIME/$ISO8601_DATETIME_UTC_OFFSET/g" $APP_CONFIG_PATH
+              echo "Created new build datetime: $BUILD_DATE_UTC"
+              perl -pi -e "s/BUILD_DATE_TIME/$BUILD_DATE_UTC/g" $APP_SETTINGS_PATH
           else
-              echo "Modified build datetime"
-              perl -pi -e "s/$ISO8601_OFFSET_REGEX/$ISO8601_DATETIME_UTC_OFFSET/g" $APP_CONFIG_PATH
+              echo "Modified build datetime: $BUILD_DATE_UTC"
+              perl -pi -e "s/$BUILD_DATE_REGEX/$BUILD_DATE_UTC/g" $APP_SETTINGS_PATH
+          fi
+
+          CLIENT_VERSION_SEARCH_STRING="BUILD_SW_VERSION"
+          CLIENT_VERSION_REGEX="[0-9]{2}\.[0-9]{2}\.[0-9]{2}\.[0-9]{2}"
+          CLIENT_VERSION=$(date -u +%y.%m.%d.%H)
+
+          if grep -Fq "$CLIENT_VERSION_SEARCH_STRING" $APP_SETTINGS_PATH
+          then
+              echo "Created new swVersion: $CLIENT_VERSION"
+              perl -pi -e "s/$CLIENT_VERSION_SEARCH_STRING/$CLIENT_VERSION/g" $APP_SETTINGS_PATH
+          else
+              echo "Modified swVersion: $CLIENT_VERSION"
+              perl -pi -e "s/$CLIENT_VERSION_REGEX/$CLIENT_VERSION/g" $APP_SETTINGS_PATH
           fi
 
       - run: npm ci --force
@@ -83,9 +95,10 @@ jobs:
               webappPrefix="QA2_"
               webappConfiguration="qa2"
             ;;
-            "staging")
+            "platypus-milestone-1.0")
               webappKey="STAGING_WEBAPP_CONFIG"
               webappPrefix="STAGING_"
+              webappUrls="https://staging.goldenheartsgames.com/"
               webappConfiguration="staging"
             ;;
           esac
@@ -93,6 +106,11 @@ jobs:
           echo "WEBAPP_PREFIX=$(echo $webappPrefix)" >> $GITHUB_ENV
           echo "WEBAPP_URLS=$(echo $webappUrls)" >> $GITHUB_ENV
           echo "WEBAPP_CONFIGURATION=$(echo $webappConfiguration)" >> $GITHUB_ENV
+
+          ENV_SETTINGS_PATH="${GITHUB_WORKSPACE}apps/webapp/src/environments/environment.ts"
+          ENV_WEBAPP_CONFIGURATION_PATH="${GITHUB_WORKSPACE}apps/webapp/src/environments/environment.${webappConfiguration}.ts"
+          cp $ENV_WEBAPP_CONFIGURATION_PATH $ENV_SETTINGS_PATH
+          echo "Replaced ${ENV_SETTINGS_PATH} with ${ENV_WEBAPP_CONFIGURATION_PATH}"
 
       - run: npm run build
 
@@ -128,17 +146,5 @@ jobs:
       - name: Deploy
         run: aws s3 sync ./dist/apps/web2/browser s3://${WEBAPP_CONFIG_WEBAPP_BUCKET} --delete --exclude "pre/*"
 
-#      - name: Copy static files
-#        run: |
-#          aws s3 cp $GITHUB_WORKSPACE/sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml --content-type "text/html; charset=UTF-8" --content-disposition "inline"
-#          aws s3 cp $GITHUB_WORKSPACE/vendor/apple-developer-merchantid-domain-association s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/.well-known/apple-developer-merchantid-domain-association --content-type "text/html; charset=UTF-8" --content-disposition "inline"
-
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/*"
-
-#      - name: WebPageTest
-#        if: ${{ env.WEBAPP_URLS != '' }}
-#        uses: WPO-Foundation/webpagetest-github-action@v1.1.2
-#        with:
-#          apiKey: ${{ secrets.WEBPAGETEST_API_KEY }}
-#          urls: ${{ env.WEBAPP_URLS }}
