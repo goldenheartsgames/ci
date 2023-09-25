@@ -31,9 +31,11 @@ jobs:
 
       - uses: actions/checkout@v3
 
+/home/runner/work/webapp/webappapps/webapp/src/environments/shared/app.settings.ts
+
       - name: Generate a buildtime and client version
         run: |
-          APP_SETTINGS_PATH="${GITHUB_WORKSPACE}apps/webapp/src/environments/shared/app.settings.ts"
+          APP_SETTINGS_PATH="${GITHUB_WORKSPACE}/apps/webapp/src/environments/shared/app.settings.ts"
           echo $APP_SETTINGS_PATH
           BUILD_DATE_SEARCH_STRING="BUILD_DATE_TIME"
           BUILD_DATE_REGEX="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[\+-][0-9]{4}"
@@ -107,8 +109,8 @@ jobs:
           echo "WEBAPP_URLS=$(echo $webappUrls)" >> $GITHUB_ENV
           echo "WEBAPP_CONFIGURATION=$(echo $webappConfiguration)" >> $GITHUB_ENV
 
-          ENV_SETTINGS_PATH="${GITHUB_WORKSPACE}apps/webapp/src/environments/environment.ts"
-          ENV_WEBAPP_CONFIGURATION_PATH="${GITHUB_WORKSPACE}apps/webapp/src/environments/environment.${webappConfiguration}.ts"
+          ENV_SETTINGS_PATH="${GITHUB_WORKSPACE}/apps/webapp/src/environments/environment.ts"
+          ENV_WEBAPP_CONFIGURATION_PATH="${GITHUB_WORKSPACE}/apps/webapp/src/environments/environment.${webappConfiguration}.ts"
           cp $ENV_WEBAPP_CONFIGURATION_PATH $ENV_SETTINGS_PATH
           echo "Replaced ${ENV_SETTINGS_PATH} with ${ENV_WEBAPP_CONFIGURATION_PATH}"
 
