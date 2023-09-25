@@ -31,8 +31,6 @@ jobs:
 
       - uses: actions/checkout@v3
 
-/home/runner/work/webapp/webappapps/webapp/src/environments/shared/app.settings.ts
-
       - name: Generate a buildtime and client version
         run: |
           APP_SETTINGS_PATH="${GITHUB_WORKSPACE}/apps/webapp/src/environments/shared/app.settings.ts"
