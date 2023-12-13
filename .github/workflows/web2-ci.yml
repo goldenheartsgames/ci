@@ -2,7 +2,7 @@ name: Web2 CI/CD
 
 on:
   push:
-    branches: [ develop, qa, qa1, qa2, markor-milestone-1.0 ]
+    branches: [ develop, qa, qa1, qa2, GHG-3475/skrill ]
   workflow_dispatch:
   workflow_call:
     secrets:
@@ -79,7 +79,7 @@ jobs:
               webappPrefix="DEV_"
               webappConfiguration="dev"
             ;;     
-            "qa")
+            "GHG-3475/skrill")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
               webappUrls="https://qa2.goldenheartsgames.com/"
@@ -95,7 +95,7 @@ jobs:
               webappPrefix="QA2_"
               webappConfiguration="qa2"
             ;;
-            "markor-milestone-1.0")
+            "qa")
               webappKey="STAGING_WEBAPP_CONFIG"
               webappPrefix="STAGING_"
               webappUrls="https://staging.goldenheartsgames.com/"
