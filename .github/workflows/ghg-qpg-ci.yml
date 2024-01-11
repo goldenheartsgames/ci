@@ -48,8 +48,8 @@ jobs:
       WORKING_PATH: /home/runner/work
     steps:
       - uses: actions/setup-node@v3
-      with:
-        node-version: 16
+        with:
+          node-version: 16
       - uses: actions/download-artifact@v3
         if: ${{ inputs.useTPBundling != '' }}
         with:
