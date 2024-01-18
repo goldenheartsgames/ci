@@ -164,9 +164,6 @@ jobs:
         working-directory: ${{ steps.download.outputs.download-path }}
         run: npm ci
 
-      - name: Test Branch Name
-        run: echo "${GITHUB_REF##*/}"
-
       - name: Build
         run: npm run build:dev
 
