@@ -64,9 +64,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Test Branch Name
-        run: |
-          echo ${{GITHUB_REF##*/}}
       - name: Set QPG Key
         if: ${{ inputs.deployTo == '' }}
         run: |
@@ -166,6 +163,9 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ steps.download.outputs.download-path }}
         run: npm ci
+
+      - name: Test Branch Name
+        run: echo ${GITHUB_REF##*/}
 
       - name: Build
         run: npm run build:dev

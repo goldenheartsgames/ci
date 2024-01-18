@@ -123,10 +123,10 @@ jobs:
           parse-json: true
 
       - name: Deploy Game
-        run: aws s3 cp dist "s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/plat/${{ inputs.gameName }}" --recursive
+        run: aws s3 cp dist "s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/plat/${{ inputs.gameName }}/${{GITHUB_REF##*/}}" --recursive
 
       - name: Sync game
-        run: aws s3 sync dist "s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/plat/${{ inputs.gameName }}" --delete --exact-timestamps
+        run: aws s3 sync dist "s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/plat/${{ inputs.gameName }}}/${{GITHUB_REF##*/}}" --delete --exact-timestamps
 
       - name: Invalidate dashboard cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${PROD_QPG_CONFIG_AWS_CF_DIST_ID} --paths "/plat/${{ inputs.gameName }}/*"
