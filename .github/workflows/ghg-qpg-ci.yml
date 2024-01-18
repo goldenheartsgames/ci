@@ -64,6 +64,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Test Branch Name
+        run: |
+          echo ${{GITHUB_REF##*/}}
       - name: Set QPG Key
         if: ${{ inputs.deployTo == '' }}
         run: |
