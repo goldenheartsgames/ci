@@ -7,6 +7,9 @@ on:
       gameName:
         required: true
         type: string
+      gameCode:
+        required: true
+        type: string
       useTPBundling:
         required: false
         type: boolean
@@ -20,6 +23,8 @@ on:
       SLACK_WEBHOOK:
         required: true
       NODE_AUTH_TOKEN:
+        required: true
+      PROD_BASIC_AUTH:
         required: true
 
 jobs:
@@ -130,6 +135,12 @@ jobs:
 
       - name: Invalidate dashboard cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${PROD_QPG_CONFIG_AWS_CF_DIST_ID} --paths "/plat/${{ inputs.gameName }}/*"
+
+      - name: Update Meta Data
+        run: |
+          curl -X POST https://api.goldenheartsgames.com/qpg/metadata/replace_src/ \
+          -H "Authorization: Basic ${{ secrets.PROD_BASIC_AUTH }}" \
+          -d "source=${{ inputs.gameName }}/${GITHUB_REF##*/}/index.html&game_name=${{ inputs.gameName }}&game_code=${{ inputs.gameCode }}"
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
