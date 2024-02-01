@@ -5,6 +5,7 @@ on:
     inputs:
       GAME_ID:
         required: true
+        type: string
 
 jobs:
   cypress-run-automation:
