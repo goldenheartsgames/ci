@@ -1,0 +1,46 @@
+name: Cypress Automation Tests
+
+on:
+  workflow_call:
+    input:
+      GAME_ID:
+        required: true
+
+jobs:
+  cypress-run-automation:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: goldenheartsgames/game-framework
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Setup
+        run: |
+          npm ci
+          npm run framework:bootstrap
+          pushd packages/core
+          npm i
+          popd
+          pushd packages/slots
+          npm i
+          popd
+          pushd packages/scratch
+          npm i
+          popd
+          pushd packages/bingo
+          npm i
+          popd
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          spec: |
+            cypress/e2e/slots/automation-tests/*.cy.ts
+          env: GAME_ID=${{secrets.GAME_ID}}
+          build: npm run framework:build
