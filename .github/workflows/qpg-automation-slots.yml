@@ -2,7 +2,7 @@ name: Cypress Automation Tests
 
 on:
   workflow_call:
-    input:
+    inputs:
       GAME_ID:
         required: true
 
