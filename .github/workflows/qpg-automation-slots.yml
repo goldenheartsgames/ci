@@ -30,7 +30,7 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          repository: https://github.com/goldenheartsgames/game-framework.git
+          repository: goldenheartsgames/game-framework
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ref: main
 
