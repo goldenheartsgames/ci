@@ -6,6 +6,9 @@ on:
       GAME_ID:
         required: true
         type: string
+    secrets:
+      QPG_AUTOMATION_TEST_TOKEN:
+        required: true
 
 jobs:
   cypress-run-automation:
