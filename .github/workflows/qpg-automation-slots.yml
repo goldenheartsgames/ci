@@ -9,7 +9,7 @@ on:
     secrets:
       PERSONAL_ACCESS_TOKEN:
         required: true
-      NPM_TOKEN:
+      NODE_AUTH_TOKEN:
         required: true
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
 
       - name: set npm auth
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
