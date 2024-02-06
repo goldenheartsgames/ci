@@ -14,13 +14,6 @@ jobs:
   cypress-run-automation:
     runs-on: ubuntu-22.04
     steps:
-      - name: Git config
-        run: |
-          git config --global user.name 'GitHub'
-          git config --global user.email 'github@goldenheartsgames.com'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - uses: actions/checkout@v3
         with:
           repository: goldenheartsgames/game-framework
