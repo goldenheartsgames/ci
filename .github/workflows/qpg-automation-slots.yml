@@ -58,6 +58,7 @@ jobs:
           build: npm run framework:build
 
       - name: Get date
+        if: always()
         run: |
           $NOW=& Get-Date -format yyyy-MM-dd
           echo "NOW=$NOW" >> $env:GITHUB_ENV
