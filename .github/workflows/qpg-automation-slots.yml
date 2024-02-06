@@ -6,6 +6,9 @@ on:
       GAME_ID:
         required: true
         type: string
+      GAME_NAME:
+        required: true
+        type: string
     secrets:
       PERSONAL_ACCESS_TOKEN:
         required: true
@@ -53,3 +56,12 @@ jobs:
             cypress/e2e/slots/automation-tests/*.cy.ts
           env: game_id=${{inputs.GAME_ID}}
           build: npm run framework:build
+
+      - name: Get date
+        run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: AutomationTest-${{inputs.GAME_NAME}}-${{NOW}}
+          path: cypress/screenshots/
