@@ -58,10 +58,12 @@ jobs:
           build: npm run framework:build
 
       - name: Get date
-        run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+        run: |
+          $NOW=& Get-Date -format yyyy-MM-dd
+          echo "NOW=$NOW" >> $env:GITHUB_ENV
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v3
         with:
-          name: AutomationTest-${{inputs.GAME_NAME}}-${{NOW}}
+          name: AutomationTest-${{inputs.GAME_NAME}}-${{env.NOW}}
           path: cypress/screenshots/
