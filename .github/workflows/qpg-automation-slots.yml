@@ -63,7 +63,9 @@ jobs:
           echo "NOW=$NOW" >> $env:GITHUB_ENV
 
       - name: Upload Screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: AutomationTest-${{inputs.GAME_NAME}}-${{env.NOW}}
           path: cypress/screenshots/
+          retention-days: 1
