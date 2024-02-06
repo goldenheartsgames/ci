@@ -14,13 +14,6 @@ jobs:
   cypress-run-automation:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: "https://registry.npmjs.org"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Git config
         run: |
           git config --global user.name 'GitHub'
@@ -33,6 +26,13 @@ jobs:
           repository: goldenheartsgames/game-framework
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ref: main
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Setup
         run: |
