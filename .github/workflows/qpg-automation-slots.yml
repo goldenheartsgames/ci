@@ -17,15 +17,15 @@ on:
 
 jobs:
   cypress-run-automation:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: goldenheartsgames/game-framework
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ref: main
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
@@ -63,7 +63,7 @@ jobs:
           echo "NOW=$NOW" >> $env:GITHUB_ENV
 
       - name: Upload Screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: AutomationTest-${{inputs.GAME_NAME}}-${{env.NOW}}
           path: cypress/screenshots/
