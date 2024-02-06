@@ -6,32 +6,30 @@ on:
       GAME_ID:
         required: true
         type: string
+    secrets:
+      PERSONAL_ACCESS_TOKEN:
+        required: true
+      NODE_AUTH_TOKEN:
+        required: true
 
 jobs:
   cypress-run-automation:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: "https://registry.npmjs.org"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Git config
-        run: |
-          git config --global user.name 'GitHub'
-          git config --global user.email 'github@goldenheartsgames.com'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - uses: actions/checkout@v3
         with:
           repository: goldenheartsgames/game-framework
-          token: ${{ secrets.QPG_AUTOMATION_TEST_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ref: main
 
-      - name: Setup
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+
+      - name: Setup Framework dist so Cypress can build
         run: |
           npm ci
           npm run framework:bootstrap
@@ -53,5 +51,5 @@ jobs:
         with:
           spec: |
             cypress/e2e/slots/automation-tests/*.cy.ts
-          env: GAME_ID=${{secrets.GAME_ID}}
+          env: game_id=${{inputs.GAME_ID}}
           build: npm run framework:build
