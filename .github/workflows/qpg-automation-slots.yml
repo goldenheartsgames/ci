@@ -56,5 +56,5 @@ jobs:
         with:
           spec: |
             cypress/e2e/slots/automation-tests/*.cy.ts
-          env: GAME_ID=${{secrets.GAME_ID}}
+          env: game_id=${{inputs.GAME_ID}}
           build: npm run framework:build
