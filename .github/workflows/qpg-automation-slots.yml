@@ -61,17 +61,11 @@ jobs:
           env: game_id=${{inputs.GAME_ID}},user_email=${{secrets.TEST_USER_EMAIL}},user_password=${{secrets.TEST_USER_PASSWORD}}
           build: npm run framework:build
 
-      - name: Get date
-        if: always()
-        run: |
-          $NOW=& Get-Date -format yyyy-MM-dd
-          echo "NOW=$NOW" >> $env:GITHUB_ENV
-
       - name: Upload Screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: AutomationTest-${{inputs.GAME_NAME}}-${{env.NOW}}
+          name: AutomationTest-${{inputs.GAME_NAME}}
           path: cypress/screenshots/
           retention-days: 1
           overwrite: true
