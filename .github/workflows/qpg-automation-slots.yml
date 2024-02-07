@@ -66,6 +66,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: AutomationTest-${{inputs.GAME_NAME}}
-          path: cypress/screenshots/
+          path: |
+            cypress/screenshots/
+            cypress/videos/
           retention-days: 1
           overwrite: true
