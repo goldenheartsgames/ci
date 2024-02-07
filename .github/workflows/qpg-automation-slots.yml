@@ -14,6 +14,10 @@ on:
         required: true
       NODE_AUTH_TOKEN:
         required: true
+      TEST_USER_EMAIL:
+        required: true
+      TEST_USER_PASSWORD:
+        required: true
 
 jobs:
   cypress-run-automation:
@@ -54,7 +58,7 @@ jobs:
         with:
           spec: |
             cypress/e2e/slots/automation-tests/*.cy.ts
-          env: game_id=${{inputs.GAME_ID}}
+          env: game_id=${{inputs.GAME_ID}},user_email=${{secrets.TEST_USER_EMAIL}},user_password=${{secrets.TEST_USER_PASSWORD}}
           build: npm run framework:build
 
       - name: Get date
