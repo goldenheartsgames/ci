@@ -33,11 +33,11 @@ jobs:
     env:
       WORKING_PATH: /home/runner/work
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.gameName }}
           path: ${{ github.workspace }}/
@@ -47,17 +47,17 @@ jobs:
     env:
       WORKING_PATH: /home/runner/work
     steps:
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ inputs.gameName }}
           path: ${{ github.workspace }}/
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         if: ${{ inputs.useTPBundling != '' }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -135,7 +135,7 @@ jobs:
           echo agree | TexturePacker --version
           TexturePacker --activate-license ${QPG_CONFIG_QPG_TEXTURE_PACKER_KEY} ${{ github.workspace }}/raw_assets/*.tps
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ inputs.useTPBundling != '' }}
         with:
           name: ${{ inputs.gameName }}
@@ -144,16 +144,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: [checkout, buildAtlas]
     steps:
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         id: download
         with:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
@@ -168,7 +168,7 @@ jobs:
         run: npm run build:dev
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -257,6 +257,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [buildProject]
     steps:
-      - uses: geekyeggo/delete-artifact@v1
+      - uses: geekyeggo/delete-artifact@v4
         with:
           name: ${{ inputs.gameName }}

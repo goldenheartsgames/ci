@@ -6,23 +6,30 @@ on:
       GAME_ID:
         required: true
         type: string
+      GAME_NAME:
+        required: true
+        type: string
     secrets:
       PERSONAL_ACCESS_TOKEN:
         required: true
       NODE_AUTH_TOKEN:
         required: true
+      TEST_USER_EMAIL:
+        required: true
+      TEST_USER_PASSWORD:
+        required: true
 
 jobs:
   cypress-run-automation:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: goldenheartsgames/game-framework
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ref: main
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
@@ -51,5 +58,16 @@ jobs:
         with:
           spec: |
             cypress/e2e/slots/automation-tests/*.cy.ts
-          env: game_id=${{inputs.GAME_ID}}
+          env: game_id=${{inputs.GAME_ID}},user_email=${{secrets.TEST_USER_EMAIL}},user_password=${{secrets.TEST_USER_PASSWORD}}
           build: npm run framework:build
+
+      - name: Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutomationTest-${{inputs.GAME_NAME}}
+          path: |
+            cypress/screenshots/
+            cypress/videos/
+          retention-days: 1
+          overwrite: true
