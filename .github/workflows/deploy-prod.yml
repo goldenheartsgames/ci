@@ -85,7 +85,7 @@ jobs:
         with:
           name: ${{ inputs.gameName }}
           path: ${{ github.workspace }}
-        overwrite: true
+          overwrite: true
 
   buildProject:
     runs-on: ubuntu-latest
