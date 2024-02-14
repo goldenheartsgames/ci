@@ -146,5 +146,17 @@ jobs:
       - name: Deploy
         run: aws s3 sync ./dist/apps/web2/browser s3://${WEBAPP_CONFIG_WEBAPP_BUCKET} --delete --exclude "pre/*" --exclude "*/index.html"
 
+      - name: Copy Sitemap
+        run: aws s3 cp ./sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml --content-type "text/html; charset=UTF-8" --content-disposition "inline"
+
+      - name: Copy Apple File One
+        run: aws s3 cp ./vendor/apple-developer-merchantid-domain-association s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/.well-known/apple-developer-merchantid-domain-association --content-type "text/html; charset=UTF-8" --content-disposition "inline"
+
+      - name: Copy Apple File Two
+        run: aws s3 cp ./vendor/apple-developer-merchantid-domain-association.txt s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/.well-known/apple-developer-merchantid-domain-association.txt --content-type "text/html; charset=UTF-8" --content-disposition "inline"
+
+      - name: Copy WebPush File
+        run: aws s3 cp ./vendor/webpush-service-worker-dev.js s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/webpush-service-worker.js --content-type "application/javascript; charset=UTF-8" --content-disposition "inline"
+
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${WEBAPP_CONFIG_WEBAPP_DIST_ID} --paths "/*"
