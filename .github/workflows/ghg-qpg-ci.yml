@@ -246,7 +246,7 @@ jobs:
         run: aws cloudfront create-invalidation --distribution-id ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
 
       - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
+        uses: rtCamp/action-slack-notify@v2.2.1
         env:
           SLACK_CHANNEL: ${{ inputs.slackChannel || 'github-games-deploy' }}
           SLACK_COLOR: ${{ job.status }}
