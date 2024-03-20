@@ -144,7 +144,7 @@ jobs:
           -d "source=${{ inputs.gameName }}/${GITHUB_REF##*/}/index.html&game_name=${{ inputs.gameName }}&game_code=${{ inputs.gameCode }}"
 
       - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
+        uses: rtCamp/action-slack-notify@v2.2.1
         env:
           SLACK_CHANNEL: ${{ inputs.slackChannel || 'github-games-deploy' }}
           SLACK_COLOR: ${{ job.status }}
