@@ -58,7 +58,7 @@ jobs:
         with:
           spec: |
             cypress/e2e/slots/automation-tests/*.cy.ts
-          env: game_id=${{inputs.GAME_ID}},user_email=${{secrets.TEST_USER_EMAIL}},user_password=${{secrets.TEST_USER_PASSWORD}}
+          env: game_id=${{inputs.GAME_ID}},user_email=${{secrets.TEST_USER_EMAIL}},user_password=${{secrets.TEST_USER_PASSWORD}},game_env=${GITHUB_REF##*/}
           build: npm run framework:build
 
       - name: Upload Screenshots
