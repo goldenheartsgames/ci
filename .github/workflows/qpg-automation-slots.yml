@@ -23,26 +23,26 @@ jobs:
   cypress-run-automation:
     runs-on: ubuntu-latest
     steps:
-      - name: Set QPG Key
-          if: ${{ inputs.deployTo == '' }}
-          run: |
-            case "${GITHUB_REF##*/}" in
-              "develop")
-                gameEnv="dev"
-              ;;
-              "qa1")
-                gameEnv="qa1"
-              ;;
-              "qa")
-                gameEnv="qa2"
-              ;;
-              "staging")
-                gameEnv="staging"
-              ;;
-            esac
-            echo "GAME_ENV=$(echo $gameEnv)" >> $GITHUB_ENV
+      - name: Set Game Environment
+        if: ${{ inputs.deployTo == '' }}
+        run: |
+          case "${GITHUB_REF##*/}" in
+            "develop")
+              gameEnv="dev"
+            ;;
+            "qa1")
+              gameEnv="qa1"
+            ;;
+            "qa")
+              gameEnv="qa2"
+            ;;
+            "staging")
+              gameEnv="staging"
+            ;;
+          esac
+          echo "GAME_ENV=$(echo $gameEnv)" >> $GITHUB_ENV
 
-      - name: Set QPG Key Manual Deploy
+      - name: Set Game Environment Manually Deployment
         if: ${{ inputs.deployTo != '' }}
         run: |
           case ${{ inputs.deployTo }} in
