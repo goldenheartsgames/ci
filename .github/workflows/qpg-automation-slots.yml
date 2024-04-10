@@ -23,6 +23,38 @@ jobs:
   cypress-run-automation:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Game Environment
+        if: ${{ inputs.deployTo == '' }}
+        run: |
+          case "${GITHUB_REF##*/}" in
+            "develop")
+              gameEnv="dev"
+            ;;
+            "qa1")
+              gameEnv="qa1"
+            ;;
+            "qa")
+              gameEnv="qa2"
+            ;;
+            "staging")
+              gameEnv="staging"
+            ;;
+          esac
+          echo "GAME_ENV=$(echo $gameEnv)" >> $GITHUB_ENV
+
+      - name: Set Game Environment Manually Deployment
+        if: ${{ inputs.deployTo != '' }}
+        run: |
+          case ${{ inputs.deployTo }} in
+            "QA1")
+              gameEnv="qa1"
+            ;;
+            "develop")
+              gameEnv="dev"
+            ;;
+          esac
+          echo "GAME_ENV=$(echo $gameEnv)" >> $GITHUB_ENV
+
       - uses: actions/checkout@v4
         with:
           repository: goldenheartsgames/game-framework
@@ -58,7 +90,7 @@ jobs:
         with:
           spec: |
             cypress/e2e/slots/automation-tests/*.cy.ts
-          env: game_id=${{inputs.GAME_ID}},user_email=${{secrets.TEST_USER_EMAIL}},user_password=${{secrets.TEST_USER_PASSWORD}}
+          env: game_id=${{inputs.GAME_ID}},user_email=${{secrets.TEST_USER_EMAIL}},user_password=${{secrets.TEST_USER_PASSWORD}},game_env=${{ env.GAME_ENV }}
           build: npm run framework:build
 
       - name: Upload Screenshots
