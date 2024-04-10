@@ -18,7 +18,7 @@ jobs:
           git fetch
           git checkout ${{ github.head_ref }}
           git pull
-          npm version minor
+          npm version minor --no-git-tag-version --yes
           git add .
           git commit -m "$(grep version package.json | tr -d [\",])"
           git push origin ${{ github.head_ref }}
