@@ -1,0 +1,24 @@
+name: Versioning QPG Game
+
+on:
+  workflow_call:
+
+jobs:
+  create-version_opened:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Versioning
+        run: |
+          git config --global user.name 'GitHub'
+          git config --global user.email 'github@goldenheartsgames.com'
+          git fetch
+          git checkout ${{ github.head_ref }}
+          git pull
+          npm version minor --no-git-tag-version --yes
+          git add .
+          git commit -m "$(grep version package.json | tr -d [\",])"
+          git push origin ${{ github.head_ref }}
