@@ -234,16 +234,6 @@ jobs:
 
       - name: Invalidate dashboard cloudfront
         run: aws cloudfront create-invalidation --distribution-id ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
-
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ inputs.slackChannel || 'github-games-deploy' }}
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
-          SLACK_TITLE: CI - ${{ inputs.gameName }}
-          SLACK_USERNAME: ghg-deploy
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   cleanup:
     runs-on: ubuntu-latest
     needs: [buildProject]
