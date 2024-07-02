@@ -3,9 +3,9 @@ name: Version Tag QPG Game
 on:
   workflow_call:
 
-  jobs:
-    Tag Version:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Tag
-          run: "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags"
+jobs:
+  Tag-Version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tag
+        run: "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags"
