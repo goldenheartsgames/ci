@@ -79,7 +79,7 @@ jobs:
               webappPrefix="DEV_"
               webappConfiguration="dev"
             ;;     
-            "GHG-4694\/static-home-page")
+            "GHG-4694-static-home-page")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
               webappUrls="https://qa2.goldenheartsgames.com/"
