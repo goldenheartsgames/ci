@@ -61,6 +61,12 @@ jobs:
               perl -pi -e "s/$CLIENT_VERSION_REGEX/$CLIENT_VERSION/g" $APP_SETTINGS_PATH
           fi
 
+          XAUTH_SETTINGS_PATH="${GITHUB_WORKSPACE}/apps/webapp/src/environments/shared/environment.non-prod.ts"
+          echo $XAUTH_SETTINGS_PATH
+          XAUTH_ROUND_MS="1800000"
+          echo "Setting XAUTH_ROUND_MS to $XAUTH_ROUND_MS"
+          perl -pi -e "s/roundMS:.*,/roundMS: $XAUTH_ROUND_MS,/g" $XAUTH_SETTINGS_PATH
+
       - run: npm ci --force
 
       - name: Configure AWS Credentials
