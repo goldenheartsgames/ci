@@ -2,7 +2,7 @@ name: Web2 CI/CD
 
 on:
   push:
-    branches: [ develop, qa, qa1, qa2, GHG-3475-skrill ]
+    branches: [ develop, qa, qa1, qa2, milton-milestone-1.0 ]
   workflow_dispatch:
   workflow_call:
     secrets:
