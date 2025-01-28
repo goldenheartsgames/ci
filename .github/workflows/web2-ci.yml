@@ -2,7 +2,7 @@ name: Web2 CI/CD
 
 on:
   push:
-    branches: [ develop, qa, qa1, qa2, milton-milestone-1.0 ]
+    branches: [ develop, qa, qa2 ]
   workflow_dispatch:
   workflow_call:
     secrets:
@@ -83,29 +83,20 @@ jobs:
             "develop")
               webappKey="DEV_WEBAPP_CONFIG"
               webappPrefix="DEV_"
+              webappUrls="https://dev.goldenheartsgames.com/"
               webappConfiguration="dev"
             ;;     
             "qa")
-              webappKey="QA2_WEBAPP_CONFIG"
-              webappPrefix="QA2_"
-              webappUrls="https://qa2.goldenheartsgames.com/"
-              webappConfiguration="qa2"
-            ;;          
-            "qa1")
-              webappKey="QA1_WEBAPP_CONFIG"
-              webappPrefix="QA1_"
-              webappConfiguration="qa1"
-            ;;    
-            "qa2")
-              webappKey="QA2_WEBAPP_CONFIG"
-              webappPrefix="QA2_"
-              webappConfiguration="qa2"
-            ;;
-            "milton-milestone-1.0")
               webappKey="STAGING_WEBAPP_CONFIG"
               webappPrefix="STAGING_"
               webappUrls="https://staging.goldenheartsgames.com/"
               webappConfiguration="staging"
+            ;;
+            "qa2")
+              webappKey="QA2_WEBAPP_CONFIG"
+              webappPrefix="QA2_"
+              webappUrls="https://qa2.goldenheartsgames.com/"
+              webappConfiguration="qa2"
             ;;
           esac
           echo "WEBAPP_KEY=$(echo $webappKey)" >> $GITHUB_ENV
