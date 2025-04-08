@@ -158,6 +158,8 @@ jobs:
     needs: [buildProject]
     steps:
       - name: Open Pull Request for Main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr create --title "Merge ${{ inputs.gameName }} to main" --body "This PR merges the release ${{ github.ref_name }} back to main" --base main --head ${{ github.ref_name }}
 
   cleanup:
