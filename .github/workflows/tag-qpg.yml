@@ -12,10 +12,10 @@ jobs:
         with:
           node-version: 18
       - name: Tag
-       run: |
+        run: |
           git config --global user.name 'GitHub'
           git config --global user.email 'github@goldenheartsgames.com'
           git fetch
           git checkout ${{ github.head_ref }}
           git pull
-        run: "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags"
+          "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags"
