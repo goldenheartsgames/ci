@@ -125,6 +125,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [buildProject]
     steps:
-      - uses: geekyeggo/delete-artifact@v1
+      - uses: geekyeggo/delete-artifact@v4
         with:
           name: ${{ inputs.gameName }}
