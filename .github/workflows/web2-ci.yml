@@ -2,7 +2,7 @@ name: Web2 CI/CD
 
 on:
   push:
-    branches: [ develop, qa, qa2 ]
+    branches: [ develop, qa, GHG-5255/kyc-jumio-my-account-flow ]
   workflow_dispatch:
   workflow_call:
     secrets:
@@ -92,7 +92,7 @@ jobs:
               webappUrls="https://staging.goldenheartsgames.com/"
               webappConfiguration="staging"
             ;;
-            "qa2")
+            "GHG-5255/kyc-jumio-my-account-flow")
               webappKey="QA2_WEBAPP_CONFIG"
               webappPrefix="QA2_"
               webappUrls="https://qa2.goldenheartsgames.com/"
