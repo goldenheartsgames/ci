@@ -207,7 +207,7 @@ jobs:
           echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
 
       - name: Read secrets from AWS Secrets Manager into environment variables
-        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        uses: abhilash1in/aws-secrets-manager-action@2cc6ddf66834f7c9432cbcf5846f6d98286be155
         if: ${{ inputs.useTPBundling != '' }}
         with:
           secrets: ${{ env.QPG_KEY }}
@@ -238,7 +238,7 @@ jobs:
         run: aws cloudfront create-invalidation --distribution-id ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
 
       - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
+        uses: rtCamp/action-slack-notify@e31e87e03dd19038e411e38ae27cbad084a90661
         env:
           SLACK_CHANNEL: ${{ inputs.slackChannel || 'github-games-deploy' }}
           SLACK_COLOR: ${{ job.status }}
@@ -250,6 +250,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [buildProject]
     steps:
-      - uses: geekyeggo/delete-artifact@v1
+      - uses: geekyeggo/delete-artifact@f275313e70c08f6120db482d7a6b98377786765b
         with:
           name: ${{ inputs.gameName }}
