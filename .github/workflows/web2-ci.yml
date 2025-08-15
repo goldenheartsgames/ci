@@ -1,5 +1,9 @@
 name: Web2 CI/CD
 
+variables:
+  nodeVersion: actions/setup-node@v3
+  nodeVersionName: lts/fermium
+
 on:
   push:
     branches: [ develop, qa, GHG-5556-angular-v15-migration ]
@@ -24,16 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WORKING_PATH: /home/runner/work
-    variables:
-      nodeVersion: actions/setup-node@v3
-      nodeVersionName: lts/fermium
-      ${{ if eq(variables['Build.SourceBranchName'], 'GHG-5556-angular-v15-migration') }}: 
-        nodeVersion: actions/setup-node@v4
-        nodeVersionName: lts/hydrogen
     steps:
-      - uses: echo $(nodeVersion)
+      - uses: $nodeVersion
         with:
-          node-version: echo $(nodeVersionName)
+          node-version: $nodeVersionName
 
       - uses: actions/checkout@v3
 
