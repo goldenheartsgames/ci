@@ -1,9 +1,5 @@
 name: Web2 CI/CD
 
-variables:
-  nodeVersion: actions/setup-node@v3
-  nodeVersionName: lts/fermium
-
 on:
   push:
     branches: [ develop, qa, GHG-5556-angular-v15-migration ]
@@ -24,6 +20,9 @@ on:
         required: true
 
 jobs:
+  variables:
+    nodeVersion: actions/setup-node@v3
+    nodeVersionName: lts/fermium
   checkoutAndBuild:
     runs-on: ubuntu-latest
     env:
