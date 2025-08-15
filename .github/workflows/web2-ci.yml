@@ -20,17 +20,14 @@ on:
         required: true
 
 jobs:
-  variables:
-    nodeVersion: actions/setup-node@v3
-    nodeVersionName: lts/fermium
   checkoutAndBuild:
     runs-on: ubuntu-latest
     env:
       WORKING_PATH: /home/runner/work
     steps:
-      - uses: ${{ nodeVersion }}
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ nodeVersionName }}
+          node-version: lts/fermium
 
       - uses: actions/checkout@v3
 
