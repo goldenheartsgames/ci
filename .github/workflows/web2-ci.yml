@@ -19,18 +19,17 @@ on:
       WEBPAGETEST_API_KEY:
         required: true
 
-variables:
-  nodeVersion: actions/setup-node@v3
-  nodeVersionName: lts/fermium
-  ${{ if eq(variables['Build.SourceBranchName'], 'GHG-5556-angular-v15-migration') }}: 
-    nodeVersion: actions/setup-node@v4
-    nodeVersionName: lts/hydrogen
-
 jobs:
   checkoutAndBuild:
     runs-on: ubuntu-latest
     env:
       WORKING_PATH: /home/runner/work
+    variables:
+      nodeVersion: actions/setup-node@v3
+      nodeVersionName: lts/fermium
+      ${{ if eq(variables['Build.SourceBranchName'], 'GHG-5556-angular-v15-migration') }}: 
+        nodeVersion: actions/setup-node@v4
+        nodeVersionName: lts/hydrogen
     steps:
       - uses: ${{ variables.nodeVersion }}
         with:
