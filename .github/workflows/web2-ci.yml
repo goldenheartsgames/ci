@@ -31,9 +31,9 @@ jobs:
         nodeVersion: actions/setup-node@v4
         nodeVersionName: lts/hydrogen
     steps:
-      - uses: ${{ variables.nodeVersion }}
+      - uses: echo $(nodeVersion)
         with:
-          node-version: ${{ variables.nodeVersionName }}
+          node-version: echo $(nodeVersionName)
 
       - uses: actions/checkout@v3
 
