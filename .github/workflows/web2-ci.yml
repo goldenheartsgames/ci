@@ -28,9 +28,9 @@ jobs:
     env:
       WORKING_PATH: /home/runner/work
     steps:
-      - uses: ${{ variables.nodeVersion }}
+      - uses: ${{ nodeVersion }}
         with:
-          node-version: ${{ variables.nodeVersionName }}
+          node-version: ${{ nodeVersionName }}
 
       - uses: actions/checkout@v3
 
