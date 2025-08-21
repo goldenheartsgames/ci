@@ -18,6 +18,10 @@ on:
         required: true
       WEBPAGETEST_API_KEY:
         required: true
+      WEBPUSH_APP_SERVICE_KEY:
+        required: true
+      WEBPUSH_API_KEY:
+        required: true
 
 jobs:
   checkoutAndBuild:
@@ -136,8 +140,8 @@ jobs:
         run: |
           perl -pi -e "s/GOOGLE_TAG_MANAGER_SRC_URL/https:\\/\\/www.googletagmanager.com\\/ns.html?id=GTM-KVRQVJ5\\&gtm_auth=${WEBAPP_CONFIG_GTM_AUTH}\\&gtm_preview=${GTM_PREVIEW}\\&gtm_cookies_win=x/g" ./dist/webapp/index.html
           perl -pi -e "s/!-- START WEBPUSH script/script/g" ./dist/webapp/index.html
-          perl -pi -e "s/WEBPUSH_APP_SERVICE_KEY/${WEBPUSH_APP_SERVICE_KEY}/g" ./dist/webapp/index.html
-          perl -pi -e "s/WEBPUSH_API_KEY/${WEBPUSH_API_KEY}/g" ./dist/webapp/index.html
+          perl -pi -e "s/WEBPUSH_APP_SERVICE_KEY/${secrets.WEBPUSH_APP_SERVICE_KEY}/g" ./dist/webapp/index.html
+          perl -pi -e "s/WEBPUSH_API_KEY/${secrets.WEBPUSH_API_KEY}/g" ./dist/webapp/index.html
           perl -pi -e "s/ END WEBPUSH --//g" ./dist/webapp/index.html
 
       - name: Deploy
