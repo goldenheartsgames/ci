@@ -1,4 +1,4 @@
-name: Dev CI Build
+name: Webapp Build - Dev
 
 on:
   push:

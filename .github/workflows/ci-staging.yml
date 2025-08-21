@@ -1,4 +1,4 @@
-name: Staging CI Build
+name: Webapp Build - Staging
 
 on:
   push:

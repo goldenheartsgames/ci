@@ -1,4 +1,4 @@
-name: QA2 CI Build
+name: Webapp Build - QA2
 
 on:
   push:
