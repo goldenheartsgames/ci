@@ -1,8 +1,8 @@
-name: Web2 CI/CD
+name: Dev CI Build
 
 on:
   push:
-    branches: [GHG-5556-angular-v15-migration]
+    branches: [develop]
   workflow_dispatch:
   workflow_call:
     secrets:
@@ -78,27 +78,10 @@ jobs:
 
       - name: Set Webapp Key
         run: |
-          webappConfiguration="production"
-          case "${GITHUB_REF##*/}" in
-            "GHG-5556-angular-v15-migration")
-              webappKey="QA2_WEBAPP_CONFIG"
-              webappPrefix="QA2_"
-              webappUrls="https://qa2.goldenheartsgames.com/"
-              webappConfiguration="qa2"
-            ;;
-            "develop")
-              webappKey="DEV_WEBAPP_CONFIG"
-              webappPrefix="DEV_"
-              webappUrls="https://dev.goldenheartsgames.com/"
-              webappConfiguration="dev"
-            ;;     
-            "qa")
-              webappKey="STAGING_WEBAPP_CONFIG"
-              webappPrefix="STAGING_"
-              webappUrls="https://staging.goldenheartsgames.com/"
-              webappConfiguration="staging"
-            ;;
-          esac
+          webappKey="DEV_WEBAPP_CONFIG"
+          webappPrefix="DEV_"
+          webappUrls="https://dev.goldenheartsgames.com/"
+          webappConfiguration="dev"
           echo "WEBAPP_KEY=$(echo $webappKey)" >> $GITHUB_ENV
           echo "WEBAPP_PREFIX=$(echo $webappPrefix)" >> $GITHUB_ENV
           echo "WEBAPP_URLS=$(echo $webappUrls)" >> $GITHUB_ENV
