@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: lts/hydrogen
+          node-version: lts/jod
 
       - uses: actions/checkout@v3
 
