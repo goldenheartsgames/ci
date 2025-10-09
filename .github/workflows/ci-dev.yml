@@ -125,7 +125,7 @@ jobs:
 
       - name: Deploy
         # run: aws s3 sync ./dist/webapp s3://${WEBAPP_CONFIG_WEBAPP_BUCKET} --delete --exclude "pre/*" --exclude "*/index.html"
-        run: aws s3 sync ./dist/webapp s3://${WEBAPP_CONFIG_WEBAPP_BUCKET} --delete"
+        run: aws s3 sync ./dist/webapp s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}"
 
       - name: Copy Sitemap
         run: aws s3 cp ./sitemap.xml s3://${WEBAPP_CONFIG_WEBAPP_BUCKET}/sitemap.xml --content-type "text/xml; charset=UTF-8" --content-disposition "inline"
