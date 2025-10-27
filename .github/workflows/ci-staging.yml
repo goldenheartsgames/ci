@@ -18,6 +18,8 @@ on:
         required: true
       WEBPAGETEST_API_KEY:
         required: true
+      TEST_AUTOMATION_ACCESS_TOKEN:
+        required: true
 
 jobs:
   checkoutAndBuild:
