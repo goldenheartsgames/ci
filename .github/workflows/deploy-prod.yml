@@ -100,7 +100,7 @@ jobs:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 25
           registry-url: "https://registry.npmjs.org"
