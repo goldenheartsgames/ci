@@ -1,4 +1,4 @@
-name: DEPLOY GHG QPG
+name: DEPLOY COIN WIZARD QPG
 
 on:
   workflow_dispatch:
@@ -107,17 +107,9 @@ jobs:
         if: ${{ inputs.deployTo != '' }}
         run: |
           case ${{ inputs.deployTo }} in
-            "qa2")
-              qpgKey="QA2_QPG_CONFIG"
-              qpgPrefix="QA2_"
-            ;;
             "develop")
-              qpgKey="DEV_QPG_CONFIG"
+              qpgKey="CW_DEV_QPG_CONFIG"
               qpgPrefix="DEV_"
-            ;;
-            "staging")
-              qpgKey="STAGING_QPG_CONFIG"
-              qpgPrefix="STAGING_"
             ;;
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
