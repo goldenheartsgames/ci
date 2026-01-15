@@ -26,10 +26,6 @@ on:
         required: true
       NODE_AUTH_TOKEN:
         required: true
-      DEPLOY_CONFIG:
-        required: true
-      DEPLOY_ENV:
-        required: true
 
 jobs:
   checkout:
@@ -111,41 +107,24 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # - name: Set QPG Key
-      #   if: ${{ inputs.deployTo == '' }}
-      #   run: |
-      #     case "${GITHUB_REF##*/}" in
-      #       "develop")
-      #         qpgKey="DEV_QPG_CONFIG"
-      #         qpgPrefix="DEV_"
-      #       ;;
-      #       "qa2")
-      #         qpgKey="QA2_QPG_CONFIG"
-      #         qpgPrefix="QA2_"
-      #       ;;
-      #       "qa")
-      #         qpgKey="STAGING_QPG_CONFIG"
-      #         qpgPrefix="STAGING_"
-      #       ;;
-      #     esac
-      #     echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
-      #     echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
-
-      # - name: Set QPG Key Manual Deploy
-      #   if: ${{ inputs.deployTo != '' }}
-      #   run: |
-      #     case ${{ inputs.deployTo }} in
-      #       "QA2")
-      #         qpgKey="QA2_QPG_CONFIG"
-      #         qpgPrefix="QA2_"
-      #       ;;
-      #       "develop")
-      #         qpgKey="DEV_QPG_CONFIG"
-      #         qpgPrefix="DEV_"
-      #       ;;
-      #     esac
-      #     echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
-      #     echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
+      - name: Set QPG Key
+        run: |
+          case "${GITHUB_REF##*/}" in
+            "develop")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
+            ;;
+            "qa2")
+              qpgKey="QA2_QPG_CONFIG"
+              qpgPrefix="QA2_"
+            ;;
+            "qa")
+              qpgKey="STAGING_QPG_CONFIG"
+              qpgPrefix="STAGING_"
+            ;;
+          esac
+          echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
+          echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
 
       - name: Read secrets from AWS Secrets Manager into environment variables
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
