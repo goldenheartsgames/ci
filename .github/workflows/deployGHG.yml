@@ -107,20 +107,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Set QPG Key
+      - name: Set QPG Key Manual Deploy
         run: |
-          case "${GITHUB_REF##*/}" in
-            "develop")
-              qpgKey="DEV_QPG_CONFIG"
-              qpgPrefix="DEV_"
-            ;;
-            "qa2")
+          case ${{ inputs.deployTo }} in
+            "QA2")
               qpgKey="QA2_QPG_CONFIG"
               qpgPrefix="QA2_"
             ;;
-            "qa")
+            "staging")
               qpgKey="STAGING_QPG_CONFIG"
               qpgPrefix="STAGING_"
+            ;;
+            "develop")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
             ;;
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
