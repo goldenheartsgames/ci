@@ -1,13 +1,9 @@
 name: deploy QPG to Coin Wizards and Golden Hearts Games
 
 on:
-  workflow_dispatch:
   workflow_call:
     inputs:
       gameName:
-        required: true
-        type: string
-      gameCode:
         required: true
         type: string
       useTPBundling:
