@@ -1,15 +1,11 @@
-name: DEPLOY GHG QPG
+name: DEPLOY COIN WIZARD QPG
 
 on:
-  workflow_dispatch:
   workflow_call:
     inputs:
       gameName:
         required: true
         type: string
-      useTPBundling:
-        required: false
-        type: boolean
       deployTo:
         required: true
         type: string
@@ -22,56 +18,10 @@ on:
         required: true
       SLACK_WEBHOOK:
         required: true
-      NODE_AUTH_TOKEN:
-        required: true
 
 jobs:
-  checkout:
+  deployProject:
     runs-on: ubuntu-latest
-    env:
-      WORKING_PATH: /home/runner/work
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 25
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ inputs.gameName }}
-          path: ${{ github.workspace }}/
-  buildAtlas:
-    runs-on: ubuntu-latest
-    needs: [checkout]
-    env:
-      WORKING_PATH: /home/runner/work
-    steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 25
-      - uses: actions/download-artifact@v4
-        if: ${{ inputs.useTPBundling != '' }}
-        with:
-          name: ${{ inputs.gameName }}
-          path: ${{ github.workspace }}/
-
-      - name: Install TP and dependencies
-        if: ${{ inputs.useTPBundling != '' }}
-        run: |
-          sudo apt-get update
-          curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/7.0.3/TexturePacker-7.0.3.deb
-          sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
-          echo agree | TexturePacker --version
-          TexturePacker --activate-license ${QPG_CONFIG_QPG_TEXTURE_PACKER_KEY} ${{ github.workspace }}/raw_assets/*.tps
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ inputs.useTPBundling != '' }}
-        with:
-          name: ${{ inputs.gameName }}
-          path: ${{ github.workspace }}
-          overwrite: true
-  buildProject:
-    runs-on: ubuntu-latest
-    needs: [checkout, buildAtlas]
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -81,20 +31,6 @@ jobs:
         with:
           name: ${{ inputs.gameName }}
           path: ${{ env.WORKING_PATH }}
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 25
-          registry-url: "https://registry.npmjs.org"
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
-
-      - name: Install dependencies
-        working-directory: ${{ steps.download.outputs.download-path }}
-        run: npm ci
-
-      - name: Build
-        run: npm run build:dev
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -162,10 +98,3 @@ jobs:
           SLACK_TITLE: CI - ${{ inputs.gameName }}
           SLACK_USERNAME: ghg-deploy
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-  cleanup:
-    runs-on: ubuntu-latest
-    needs: [buildProject]
-    steps:
-      - uses: geekyeggo/delete-artifact@v4
-        with:
-          name: ${{ inputs.gameName }}
