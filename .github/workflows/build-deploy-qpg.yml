@@ -26,7 +26,7 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build-qpg.yml
+    uses: goldenheartsgames/ci/.github/workflows/build-qpg.yml@coinwizards
     with:
       gameName: ${{ inputs.gameName }}
       useTPBundling: ${{ inputs.useTPBundling }}
@@ -35,7 +35,7 @@ jobs:
 
   deployGHG:
     needs: build
-    uses: .github/workflows/deployGHG.yml
+    uses: goldenheartsgames/ci/.github/workflows/deployGHG.yml@coinwizards
     with:
       gameName: ${{ inputs.gameName }}
       deployTo: ${{ inputs.deployTo }}
@@ -47,7 +47,7 @@ jobs:
 
   deployCW:
     needs: build
-    uses: ./.github/workflows/deployCW.yml
+    uses: goldenheartsgames/ci/.github/workflows/deployCW.yml@coinwizards
     with:
       gameName: ${{ inputs.gameName }}
       deployTo: ${{ inputs.deployTo }}
