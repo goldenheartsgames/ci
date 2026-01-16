@@ -1,7 +1,6 @@
 name: DEPLOY COIN WIZARD QPG
 
 on:
-  workflow_dispatch:
   workflow_call:
     inputs:
       gameName:
@@ -23,7 +22,6 @@ on:
 jobs:
   deployProject:
     runs-on: ubuntu-latest
-    needs: [checkout, buildAtlas]
     steps:
       - uses: actions/setup-node@v4
         with:
