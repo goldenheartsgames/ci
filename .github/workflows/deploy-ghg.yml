@@ -1,0 +1,102 @@
+name: DEPLOY TO GOLDEN HEARTS GAMES QPG
+
+on:
+  workflow_call:
+    inputs:
+      gameName:
+        required: true
+        type: string
+      deployTo:
+        required: true
+        type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_REGION:
+        required: true
+      SLACK_WEBHOOK:
+        required: true
+
+jobs:
+  deploy-to-Golden-Hearts-Games:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25
+      - uses: actions/download-artifact@v4
+        id: download
+        with:
+          name: ${{ inputs.gameName }}
+          path: ${{ github.workspace }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set QPG Key Manual Deploy
+        if: ${{ inputs.deployTo != '' }}
+        run: |
+          case ${{ inputs.deployTo }} in
+            "qa2")
+              qpgKey="QA2_QPG_CONFIG"
+              qpgPrefix="QA2_"
+            ;;
+            "develop")
+              qpgKey="DEV_QPG_CONFIG"
+              qpgPrefix="DEV_"
+            ;;
+            "staging")
+              qpgKey="STAGING_QPG_CONFIG"
+              qpgPrefix="STAGING_"
+            ;;
+          esac
+          echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
+          echo "QPG_PREFIX=$(echo $qpgPrefix)" >> $GITHUB_ENV
+
+      - name: Read secrets from AWS Secrets Manager into environment variables
+        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        with:
+          secrets: ${{ env.QPG_KEY }}
+          parse-json: true
+
+      - name: Convert variables
+        run: |
+          readarray -t vars < <(compgen -A variable)
+          declare -p vars
+          echo $vars
+          for item in "${vars[@]}"
+          do
+              if  [[ $item == $QPG_PREFIX* ]];
+              then
+                var=${item/$QPG_PREFIX/}
+                echo "${var}=$(echo "${!item}")" >> $GITHUB_ENV
+                  echo "key: " . $item
+              fi
+          done
+
+      - name: Deploy Game
+        working-directory: ${{ github.workspace }}
+        run: aws s3 cp dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
+
+      - name: Sync game
+        working-directory: ${{ github.workspace }}
+        run: aws s3 sync dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
+
+      - name: Invalidate dashboard cloudfront
+        run: aws cloudfront create-invalidation --distribution-id ${QPG_CONFIG_QPG_AWS_CF_DIST_ID} --paths "/${{ inputs.gameName }}/*"
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2.2.1
+        env:
+          SLACK_CHANNEL: ${{ inputs.slackChannel || 'github-games-deploy' }}
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
+          SLACK_TITLE: CI - ${{ inputs.gameName }}
+          SLACK_USERNAME: ghg-deploy
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
