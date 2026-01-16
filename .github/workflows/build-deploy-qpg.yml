@@ -23,8 +23,6 @@ on:
         required: true
       NODE_AUTH_TOKEN:
         required: true
-      PROD_BASIC_AUTH:
-        required: true
 
 jobs:
   build:
