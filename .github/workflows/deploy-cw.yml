@@ -20,7 +20,7 @@ on:
         required: true
 
 jobs:
-  deployProject:
+  deploy-to-Coin-Wizards:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v4

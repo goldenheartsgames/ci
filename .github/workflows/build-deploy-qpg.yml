@@ -21,20 +21,20 @@ on:
         required: true
       SLACK_WEBHOOK:
         required: true
-      NODE_AUTH_TOKEN:
+      NPM_TOKEN:
         required: true
 
 jobs:
-  build:
+  build-qpg:
     uses: goldenheartsgames/ci/.github/workflows/build-qpg.yml@coinwizards
     with:
       gameName: ${{ inputs.gameName }}
       useTPBundling: ${{ inputs.useTPBundling }}
     secrets:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  deployGHG:
-    needs: build
+  deploy-to-GHG:
+    needs: build-qpg
     uses: goldenheartsgames/ci/.github/workflows/deploy-ghg.yml@coinwizards
     with:
       gameName: ${{ inputs.gameName }}
@@ -45,8 +45,8 @@ jobs:
       AWS_REGION: ${{ secrets.DEV_AWS_REGION }}
       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
-  deployCW:
-    needs: build
+  deploy-to-CW:
+    needs: build-qpg
     uses: goldenheartsgames/ci/.github/workflows/deploy-cw.yml@coinwizards
     with:
       gameName: ${{ inputs.gameName }}
@@ -59,7 +59,7 @@ jobs:
 
   cleanup:
     runs-on: ubuntu-latest
-    needs: [deployGHG, deployCW]
+    needs: [deploy-to-GHG, deploy-to-CW]
     steps:
       - uses: geekyeggo/delete-artifact@v4
         with:
