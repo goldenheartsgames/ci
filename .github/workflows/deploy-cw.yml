@@ -30,7 +30,7 @@ jobs:
         id: download
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/dist
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
