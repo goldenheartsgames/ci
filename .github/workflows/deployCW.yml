@@ -109,7 +109,7 @@ jobs:
           case ${{ inputs.deployTo }} in
             "develop")
               qpgKey="CW_DEV_QPG_CONFIG"
-              qpgPrefix="DEV_"
+              qpgPrefix="CW_DEV_"
             ;;
           esac
           echo "QPG_KEY=$(echo $qpgKey)" >> $GITHUB_ENV
