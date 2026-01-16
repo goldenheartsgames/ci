@@ -28,7 +28,7 @@ on:
 
 jobs:
   build:
-    uses: .github/workflows/build-qpg.yml
+    uses: ./.github/workflows/build-qpg.yml
     with:
       gameName: ${{ inputs.gameName }}
       useTPBundling: ${{ inputs.useTPBundling }}
@@ -49,7 +49,7 @@ jobs:
 
   deployCW:
     needs: build
-    uses: .github/workflows/deployCW.yml
+    uses: ./.github/workflows/deployCW.yml
     with:
       gameName: ${{ inputs.gameName }}
       deployTo: ${{ inputs.deployTo }}
