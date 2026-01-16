@@ -73,9 +73,11 @@ jobs:
           done
 
       - name: Deploy Game
+        working-directory: ${{ env.WORKING_PATH }}
         run: aws s3 cp dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
 
       - name: Sync game
+        working-directory: ${{ env.WORKING_PATH }}
         run: aws s3 sync dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
 
       - name: Invalidate dashboard cloudfront
