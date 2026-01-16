@@ -30,7 +30,7 @@ jobs:
         id: download
         with:
           name: ${{ inputs.gameName }}
-          path: ${{ env.WORKING_PATH }}
+          path: ${{ github.workspace }}/dist
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -43,6 +43,14 @@ jobs:
         if: ${{ inputs.deployTo != '' }}
         run: |
           case ${{ inputs.deployTo }} in
+            "qa2")
+              qpgKey="CW_DEV_QPG_CONFIG"
+              qpgPrefix="CW_DEV_"
+            ;;
+            "staging")
+              qpgKey="CW_DEV_QPG_CONFIG"
+              qpgPrefix="CW_DEV_"
+            ;;
             "develop")
               qpgKey="CW_DEV_QPG_CONFIG"
               qpgPrefix="CW_DEV_"
@@ -73,11 +81,11 @@ jobs:
           done
 
       - name: Deploy Game
-        working-directory: ${{ env.WORKING_PATH }}
+        working-directory: ${{ github.workspace  }}
         run: aws s3 cp dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
 
       - name: Sync game
-        working-directory: ${{ env.WORKING_PATH }}
+        working-directory: ${{ github.workspace  }}
         run: aws s3 sync dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --delete --exact-timestamps
 
       - name: Invalidate dashboard cloudfront
