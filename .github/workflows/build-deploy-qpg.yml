@@ -21,6 +21,8 @@ on:
         required: true
       SLACK_WEBHOOK:
         required: true
+      NPM_TOKEN:
+        required: true
 
 jobs:
   build-qpg:
@@ -28,6 +30,8 @@ jobs:
     with:
       gameName: ${{ inputs.gameName }}
       useTPBundling: ${{ inputs.useTPBundling }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   deploy-to-GHG:
     needs: build-qpg
@@ -35,6 +39,11 @@ jobs:
     with:
       gameName: ${{ inputs.gameName }}
       deployTo: ${{ inputs.deployTo }}
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
   deploy-to-CW:
     needs: build-qpg
@@ -42,6 +51,11 @@ jobs:
     with:
       gameName: ${{ inputs.gameName }}
       deployTo: ${{ inputs.deployTo }}
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.DEV_AWS_REGION }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
   cleanup:
     runs-on: ubuntu-latest
