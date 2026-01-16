@@ -9,9 +9,6 @@ on:
       useTPBundling:
         required: false
         type: boolean
-    secrets:
-      NPM_TOKEN:
-        required: true
 
 jobs:
   checkout:
