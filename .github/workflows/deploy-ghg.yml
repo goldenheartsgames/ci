@@ -1,4 +1,4 @@
-name: DEPLOY COIN WIZARD QPG
+name: DEPLOY TO GOLDEN HEARTS GAMES QPG
 
 on:
   workflow_call:
