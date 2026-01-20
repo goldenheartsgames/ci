@@ -97,6 +97,6 @@ jobs:
           SLACK_CHANNEL: ${{ inputs.slackChannel || 'github-games-deploy' }}
           SLACK_COLOR: ${{ job.status }}
           SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
-          SLACK_TITLE: CI - ${{ inputs.gameName }}
+          SLACK_TITLE: CI COIN WIZARD- ${{ inputs.gameName }}
           SLACK_USERNAME: ghg-deploy
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
