@@ -47,7 +47,7 @@ jobs:
 
   deploy-to-CW:
     needs: build-qpg
-    uses: goldenheartsgames/ci/.github/workflows/deploy-cw.yml@main
+    uses: goldenheartsgames/ci/.github/workflows/deploy-cw.yml@coinwizards
     with:
       gameName: ${{ inputs.gameName }}
       deployTo: ${{ inputs.deployTo }}
