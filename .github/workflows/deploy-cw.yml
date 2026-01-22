@@ -80,9 +80,11 @@ jobs:
               fi
           done
 
-      - name: Copy Coin Wizard Fonts
+      - name: Copy Coin Wizard Fonts files
         working-directory: ${{ github.workspace }}
-        run: cp -r ${{ github.workspace }}/dist/assets/fonts/CoinWizards ${{ github.workspace }}/dist/assets/fonts
+        run:
+          cp ${{ github.workspace }}/dist/assets/fonts/CoinWizards/*.fnt ${{ github.workspace }}/dist/assets/fonts
+          cp ${{ github.workspace }}/dist/assets/fonts/CoinWizards/*.png ${{ github.workspace }}/dist/assets/fonts
 
       - name: Deploy Game
         working-directory: ${{ github.workspace  }}
