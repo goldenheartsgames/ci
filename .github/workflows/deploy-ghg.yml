@@ -80,6 +80,10 @@ jobs:
               fi
           done
 
+      - name: Delete Coin Wizard Fonts
+        working-directory: ${{ github.workspace }}
+        run: rm -rf ${{ github.workspace }}/dist/assets/fonts/CoinWizards
+
       - name: Deploy Game
         working-directory: ${{ github.workspace }}
         run: aws s3 cp dist s3://${QPG_CONFIG_QPG_GHG_QPG_URL}/${{ inputs.gameName }} --recursive
