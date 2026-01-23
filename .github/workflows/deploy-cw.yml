@@ -82,11 +82,11 @@ jobs:
 
       - name: Copy Coin Wizard Fonts files
         working-directory: ${{ github.workspace }}
-        run: cp -r -v ./dist/assets/fonts/CoinWizards/* ./dist/assets/fonts/
+        run: cp -r -v ./dist/assets/fonts/main/* ./dist/assets/fonts/
 
       - name: Delete Coin Wizard Fonts files
         working-directory: ${{ github.workspace }}
-        run: rm -r -v ./dist/assets/fonts/CoinWizards/*
+        run: rm -r -v ./dist/assets/fonts/main/*
 
       - name: Deploy Game
         working-directory: ${{ github.workspace  }}
