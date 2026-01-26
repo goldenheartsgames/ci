@@ -44,12 +44,12 @@ jobs:
         run: |
           case ${{ inputs.deployTo }} in
             "qa2")
-              qpgKey="CW_DEV_QPG_CONFIG"
-              qpgPrefix="CW_DEV_"
+              qpgKey="CW_QA2_QPG_CONFIG"
+              qpgPrefix="CW_QA2_"
             ;;
             "staging")
-              qpgKey="CW_DEV_QPG_CONFIG"
-              qpgPrefix="CW_DEV_"
+              qpgKey="CW_STAGING_QPG_CONFIG"
+              qpgPrefix="CW_STAGING_"
             ;;
             "develop")
               qpgKey="CW_DEV_QPG_CONFIG"
