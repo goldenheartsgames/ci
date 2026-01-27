@@ -82,7 +82,7 @@ jobs:
 
       - name: Delete Coin Wizard Fonts
         working-directory: ${{ github.workspace }}
-        run: rm -r -v ./dist/assets/fonts/main/*
+        run: rm -r -v ./dist/assets/fonts/CoinWizards/*
 
       - name: Deploy Game
         working-directory: ${{ github.workspace }}
