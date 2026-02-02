@@ -80,15 +80,17 @@ jobs:
               fi
           done
 
-      - name: Copy Coin Wizard Assets
+      - name: Copy Coin Wizard images
         working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/img/CoinWizards/*.json') != '' }}
         run: |
-          if [ -d ./dist/assets/fonts/CoinWizards ]; then
-            cp -r -v ./dist/assets/fonts/CoinWizards/* ./dist/assets/fonts/
-          fi
-          if [ -d ./dist/assets/img/CoinWizards ]; then
-            cp -r -v ./dist/assets/img/CoinWizards/* ./dist/assets/img/
-          fi
+          cp -r -v ./dist/assets/img/CoinWizards/* ./dist/assets/img/
+
+      - name: Copy Coin Wizard fonts
+        working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/fonts/CoinWizards/*.fnt') != '' }}
+        run: |
+          cp -r -v ./dist/assets/fonts/CoinWizards/* ./dist/assets/fonts/
 
       - name: Delete Coin Wizard assets
         working-directory: ${{ github.workspace }}
