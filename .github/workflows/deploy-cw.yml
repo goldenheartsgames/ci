@@ -80,12 +80,26 @@ jobs:
               fi
           done
 
-      - name: Copy Coin Wizard Fonts files
+      - name: Copy Coin Wizard images
         working-directory: ${{ github.workspace }}
-        run: cp -r -v ./dist/assets/fonts/CoinWizards/* ./dist/assets/fonts/
+        if: ${{ hashFiles('./dist/assets/img/CoinWizards/*.json') != '' }}
+        run: |
+          cp -r -v ./dist/assets/img/CoinWizards/* ./dist/assets/img/
 
-      - name: Delete Coin Wizard Fonts files
+      - name: Copy Coin Wizard fonts
         working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/fonts/CoinWizards/*.fnt') != '' }}
+        run: |
+          cp -r -v ./dist/assets/fonts/CoinWizards/* ./dist/assets/fonts/
+
+      - name: Delete Coin Wizard images
+        working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/img/CoinWizards/*.json') != '' }}
+        run: rm -r -v ./dist/assets/img/CoinWizards/*
+
+      - name: Delete Coin Wizard fonts
+        working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/fonts/CoinWizards/*.fnt') != '' }}
         run: rm -r -v ./dist/assets/fonts/CoinWizards/*
 
       - name: Deploy Game
