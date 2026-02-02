@@ -92,15 +92,15 @@ jobs:
         run: |
           cp -r -v ./dist/assets/fonts/CoinWizards/* ./dist/assets/fonts/
 
-      - name: Delete Coin Wizard assets
+      - name: Delete Coin Wizard images
         working-directory: ${{ github.workspace }}
-        run: |
-          if [ -d ./dist/assets/fonts/CoinWizards ]; then
-            rm -r -v ./dist/assets/fonts/CoinWizards/*
-          fi
-          if [ -d ./dist/assets/img/CoinWizards ]; then
-            rm -r -v ./dist/assets/img/CoinWizards/*
-          fi
+        if: ${{ hashFiles('./dist/assets/img/CoinWizards/*.json') != '' }}
+        run: rm -r -v ./dist/assets/img/CoinWizards/*
+
+      - name: Delete Coin Wizard fonts
+        working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/fonts/CoinWizards/*.fnt') != '' }}
+        run: rm -r -v ./dist/assets/fonts/CoinWizards/*
 
       - name: Deploy Game
         working-directory: ${{ github.workspace  }}
