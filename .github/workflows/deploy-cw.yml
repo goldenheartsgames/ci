@@ -116,7 +116,7 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2.2.1
         env:
-          SLACK_CHANNEL: ${{ inputs.slackChannel || 'github-games-deploy' }}
+          SLACK_CHANNEL: github-games-deploy
           SLACK_COLOR: ${{ job.status }}
           SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
           SLACK_TITLE: CI COIN WIZARD - ${{ inputs.gameName }}
