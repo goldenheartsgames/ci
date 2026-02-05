@@ -113,25 +113,25 @@ jobs:
 
       - name: Copy Coin Wizard images
         working-directory: ${{ github.workspace }}
-        if: ${{ hashFiles('./dist/assets/img/CoinWizards/*.json') != '' }}
+        if: ${{ hashFiles('./src/assets/img/CoinWizards/*.json') != '' }}
         run: |
-          cp -r -v ./dist/assets/img/CoinWizards/* ./dist/assets/img/
+          cp -r -v ./src/assets/img/CoinWizards/* ./src/assets/img/
 
       - name: Copy Coin Wizard fonts
         working-directory: ${{ github.workspace }}
-        if: ${{ hashFiles('./dist/assets/fonts/CoinWizards/*.fnt') != '' }}
+        if: ${{ hashFiles('./src/assets/fonts/CoinWizards/*.fnt') != '' }}
         run: |
-          cp -r -v ./dist/assets/fonts/CoinWizards/* ./dist/assets/fonts/
+          cp -r -v ./src/assets/fonts/CoinWizards/* ./src/assets/fonts/
 
       - name: Delete Coin Wizard images
         working-directory: ${{ github.workspace }}
-        if: ${{ hashFiles('./dist/assets/img/CoinWizards/*.json') != '' }}
-        run: rm -r -v ./dist/assets/img/CoinWizards/*
+        if: ${{ hashFiles('./src/assets/img/CoinWizards/*.json') != '' }}
+        run: rm -r -v ./src/assets/img/CoinWizards/*
 
       - name: Delete Coin Wizard fonts
         working-directory: ${{ github.workspace }}
-        if: ${{ hashFiles('./dist/assets/fonts/CoinWizards/*.fnt') != '' }}
-        run: rm -r -v ./dist/assets/fonts/CoinWizards/*
+        if: ${{ hashFiles('./src/assets/fonts/CoinWizards/*.fnt') != '' }}
+        run: rm -r -v ./src/assets/fonts/CoinWizards/*
 
       - name: Build
         run: npm run build
