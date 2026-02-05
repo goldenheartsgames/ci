@@ -114,6 +114,18 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Copy Coin Wizard images
+        working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/img/CoinWizards/*.json') != '' }}
+        run: |
+          cp -r -v ./dist/assets/img/CoinWizards/* ./dist/assets/img/
+
+      - name: Copy Coin Wizard fonts
+        working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/fonts/CoinWizards/*.fnt') != '' }}
+        run: |
+          cp -r -v ./dist/assets/fonts/CoinWizards/* ./dist/assets/fonts/
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
