@@ -1,0 +1,185 @@
+name: QPG DEPLOY GHG PROD
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      gameName:
+        required: true
+        type: string
+      gameCode:
+        required: true
+        type: string
+      useTPBundling:
+        required: false
+        type: boolean
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_REGION:
+        required: true
+      SLACK_WEBHOOK:
+        required: true
+      NODE_AUTH_TOKEN:
+        required: true
+      PROD_BASIC_AUTH:
+        required: true
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    env:
+      WORKING_PATH: /home/runner/work
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.gameName }}
+          path: ${{ github.workspace }}/
+
+  buildAtlas:
+    runs-on: ubuntu-latest
+    needs: [checkout]
+    env:
+      WORKING_PATH: /home/runner/work
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.useTPBundling != '' }}
+        with:
+          name: ${{ inputs.gameName }}
+          path: ${{ github.workspace }}/
+
+      - name: Configure AWS Credentials
+        if: ${{ inputs.useTPBundling != '' }}
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Read secrets from AWS Secrets Manager into environment variables
+        if: ${{ inputs.useTPBundling != '' }}
+        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        with:
+          secrets: |
+            PROD_QPG_CONFIG
+          parse-json: true
+
+      - name: Install TP and dependencies
+        if: ${{ inputs.useTPBundling != '' }}
+        run: |
+          sudo apt-get update
+          curl --output /tmp/tp.deb https://www.codeandweb.com/download/texturepacker/6.0.2/TexturePacker-6.0.2.deb
+          sudo apt-get -y install libegl1-mesa libgl1-mesa-glx libfontconfig libx11-6 libxkbcommon-x11-0 /tmp/tp.deb
+          echo agree | TexturePacker --version
+          TexturePacker --activate-license ${PROD_QPG_CONFIG_TEXTURE_PACKER_KEY} ${{ github.workspace }}/raw_assets/*.tps
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.gameName }}
+          path: ${{ github.workspace }}
+          overwrite: true
+
+  buildProject:
+    runs-on: ubuntu-latest
+    needs: [checkout, buildAtlas]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25
+      - uses: actions/download-artifact@v4
+        id: download
+        with:
+          name: ${{ inputs.gameName }}
+          path: ${{ env.WORKING_PATH }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+
+      - name: Install dependencies
+        working-directory: ${{ steps.download.outputs.download-path }}
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Delete Coin Wizard images
+        working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/img/CoinWizards/*.json') != '' }}
+        run: rm -r -v ./dist/assets/img/CoinWizards/*
+
+      - name: Delete Coin Wizard fonts
+        working-directory: ${{ github.workspace }}
+        if: ${{ hashFiles('./dist/assets/fonts/CoinWizards/*.fnt') != '' }}
+        run: rm -r -v ./dist/assets/fonts/CoinWizards/*
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Read secrets from AWS Secrets Manager into environment variables
+        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
+        with:
+          secrets: |
+            PROD_QPG_CONFIG
+          parse-json: true
+
+      - name: Deploy Game
+        run: aws s3 cp dist "s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/plat/${{ inputs.gameName }}/${GITHUB_REF##*/}" --recursive
+
+      - name: Sync game
+        run: aws s3 sync dist "s3://${PROD_QPG_CONFIG_GHG_QPG_URL}/plat/${{ inputs.gameName }}/${GITHUB_REF##*/}" --delete --exact-timestamps
+
+      - name: Invalidate dashboard cloudfront
+        run: aws cloudfront create-invalidation --distribution-id ${PROD_QPG_CONFIG_AWS_CF_DIST_ID} --paths "/plat/${{ inputs.gameName }}/*"
+
+      - name: Update Meta Data
+        run: |
+          curl -X POST https://api.goldenheartsgames.com/qpg/metadata/replace_src/ \
+          -H "Authorization: Basic ${{ secrets.PROD_BASIC_AUTH }}" \
+          -d "source=${{ inputs.gameName }}/${GITHUB_REF##*/}/index.html&game_name=${{ inputs.gameName }}&game_code=${{ inputs.gameCode }}"
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2.2.1
+        env:
+          SLACK_CHANNEL: ${{ inputs.slackChannel || 'github-games-deploy' }}
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://www.goldenheartsgames.com/favicon.ico
+          SLACK_TITLE: PRODUCTION RELEASE - GOLDEN HEARTS - ${{ inputs.gameName }}
+          SLACK_USERNAME: ghg-deploy
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+  OpenPR:
+    runs-on: ubuntu-latest
+    needs: [buildProject]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25
+      - name: Open Pull Request for Main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr create --title "Merge ${{ inputs.gameName }} to main" --body "This PR merges the release ${{ github.ref_name }} back to main" --base main --head ${{ github.ref_name }}
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: [buildProject]
+    steps:
+      - uses: geekyeggo/delete-artifact@v4
+        with:
+          name: ${{ inputs.gameName }}
